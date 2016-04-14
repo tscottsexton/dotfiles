@@ -1,0 +1,77 @@
+if [ -f /etc/bash_completion ]; then
+	    . /etc/bash_completion
+fi
+
+xhost +local:root > /dev/null 2>&1
+
+complete -cf sudo
+
+shopt -s cdspell
+shopt -s checkwinsize
+shopt -s cmdhist
+shopt -s dotglob
+shopt -s expand_aliases
+shopt -s extglob
+shopt -s histappend
+shopt -s hostcomplete
+
+export DISPLAY=:0
+export HISTSIZE=10000
+export HISTFILESIZE=${HISTSIZE}
+export HISTCONTROL=ignoreboth
+export JAVA_FONTS=/usr/share/fonts/TTF
+export EDITOR=/usr/bin/vim
+
+alias ls='ls --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
+alias admin='ssh tssexto2@tutelage.oit.ncsu.edu'
+alias fuck='eval $(thefuck $(fc -ln -1))'
+alias vi='vim'
+alias ...='cd ../..'
+alias ..='cd ..'
+alias q='exit'
+alias cls='clear'
+alias c='clear'
+alias sl=ls
+alias ll='ls -lah'
+alias grep='grep --color=tty -d skip'
+alias cp="cp -i"                          # confirm before overwriting something
+alias df='df -h'                          # human-readable sizes
+alias free='free -m'                      # show sizes in MB
+alias np='vim PKGBUILD'
+alias fixit='sudo rm -f /var/lib/pacman/db.lck'
+alias con='vim $HOME/.i3/config'
+alias comp='vim $HOME/.config/compton.conf'
+alias inst='sudo pacman -S'
+alias mirrors='sudo pacman-mirrors -g'
+alias printer='system-config-printer'
+alias trilug='weechat'
+alias cofr='weechat -d ~/.weechat/weechat2'
+
+# ex - archive extractor
+# usage: ex <file>
+ex ()
+{
+  if [ -f $1 ] ; then
+    case $1 in
+      *.tar.bz2)   tar xjf $1   ;;
+      *.tar.gz)    tar xzf $1   ;;
+      *.bz2)       bunzip2 $1   ;;
+      *.rar)       unrar x $1     ;;
+      *.gz)        gunzip $1    ;;
+      *.tar)       tar xf $1    ;;
+      *.tbz2)      tar xjf $1   ;;
+      *.tgz)       tar xzf $1   ;;
+      *.zip)       unzip $1     ;;
+      *.Z)         uncompress $1;;
+      *.7z)        7z x $1      ;;
+      *)           echo "'$1' cannot be extracted vima ex()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
+
+# prompt
+BROWSER=/usr/bin/xdg-open
+source ~/scripts/tmux_func.bsh
+PS1='\u:[$(pwd)/]\$ '

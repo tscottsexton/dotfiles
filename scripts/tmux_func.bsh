@@ -1,0 +1,1359 @@
+#!/bin/bash
+
+
+# This script uses tmux to connect to NCSU peoplesoft environments to administer the servers.
+# It uses tmux to create the terminals and connections, and also configures tmux with
+# keyboard shortcuts to easily switch between all servers or grouped app, bat and web servers.
+
+#############
+# VARIABLES #
+#############
+
+# Fully Qual Domain Name
+FQDN='.acs.ncsu.edu'
+
+# Baseline tmux config file
+BCONF=/etc/basetmux.conf
+
+############################################################
+# COMMAND VARIABLES TO START TMUX DEPENDING ON ENVIRONMENT #
+############################################################
+
+# Command for a 3 server environment (1 app, 1 bat and 1 web)
+SVR3='tmux -f $HOME/${ENV}_tmux.conf new -s $ENV "ssh $APP1$FQDN" \; renamew -t $ENV:1 ALL \; splitw -t $ENV:1.1 -h "ssh $BAT1$FQDN" \; splitw -t $ENV:1.2 -h "ssh $WEB1$FQDN" \; selectl even-vertical \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
+
+# Command for a 6 server environment (2 app, 2 bat and 2 web)
+SVR6='tmux -f $HOME/${ENV}_tmux.conf new -s $ENV "ssh $APP1$FQDN" \; renamew -t $ENV:1 ALL \; splitw -t $ENV:1.1 -h "ssh $APP2$FQDN" \; splitw -t $ENV:1.2 -v "ssh $BAT1$FQDN" \; splitw -t $ENV:1.3 -v "ssh $BAT2$FQDN" \; splitw -t $ENV:1.1 -h "ssh $WEB1$FQDN" \; splitw -t $ENV:1.4 -h "ssh $WEB2$FQDN" \; selectl tiled \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
+
+# Command for a 10 server environment (3 app, 2 IB, 2 bat and 3 web)
+SVR10='tmux -f $HOME/${ENV}_tmux.conf new -s $ENV "ssh $APP1$FQDN" \; renamew -t $ENV:1 ALL \; splitw -t $ENV:1.1 -h "ssh $APP2$FQDN" \; splitw -t $ENV:1.2 -h "ssh $APP3$FQDN" \; splitw -t $ENV:1.3 -v "ssh $API1$FQDN" \; selectl tiled \; splitw -t $ENV:1.4 -v "ssh $API2$FQDN" \; selectl tiled \; splitw -t $ENV:1.5 -v "ssh $BAT1$FQDN" \; selectl tiled \; splitw -t $ENV1.6 -v "ssh $BAT2$FQDN" \; selectl tiled \; splitw -t $ENV:1.7 -v "ssh $WEB1$FQDN" \; selectl tiled \; splitw -t $ENV:1.8 -v "ssh $WEB2$FQDN" \; selectl tiled \; splitw -t $ENV:1.9 -v "ssh $WEB3$FQDN" \; selectl tiled \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
+
+# Command for a 12 server environment (3 app, 3 bat and 6 web)
+SVR12='tmux -f $HOME/${ENV}_tmux.conf new -s $ENV "ssh $APP1$FQDN" \; renamew -t $ENV:1 ALL \; splitw -t $ENV:1.1 -h "ssh $APP2$FQDN" \; splitw -t $ENV:1.2 -h "ssh $APP3$FQDN" \; splitw -t $ENV:1.3 -v "ssh $BAT1$FQDN" \; splitw -t $ENV:1.4 -v "ssh $BAT2$FQDN" \; splitw -t $ENV:1.5  -v "ssh $BAT3$FQDN" \; selectl tiled \; splitw -t $ENV:1.6  -v "ssh $WEB1$FQDN" \; selectl tiled \; splitw -t $ENV:1.7 -v "ssh $WEB2$FQDN" \; selectl tiled \; splitw -t $ENV:1.8 -v "ssh $WEB3$FQDN" \; selectl tiled \; splitw -t $ENV:1.9 -v "ssh $WEB4$FQDN" \; selectl tiled \; splitw -t $ENV:1.10 -v "ssh $WEB5$FQDN" \; selectl tiled \; splitw -t $ENV:1.11 -v "ssh $WEB6$FQDN" \; selectl tiled \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
+
+# Command for a 14 server environment (3 app, 2 IB, 3 bat and 6 web)
+SVR14='tmux -f $HOME/${ENV}_tmux.conf new -s $ENV "ssh $APP1$FQDN" \; renamew -t $ENV:1 ALL \; splitw -t $ENV:1.1 -h "ssh $APP2$FQDN" \; splitw -t $ENV:1.2 -h "ssh $APP3$FQDN" \; splitw -t $ENV:1.3 -v "ssh $API1$FQDN" \; splitw -t $ENV:1.4 -v "ssh $API2$FQDN" \; splitw -t $ENV:1.5 -v "ssh $BAT1$FQDN" \; selectl tiled \; splitw -t $ENV:1.6 -v "ssh $BAT2$FQDN" \; selectl tiled \; splitw -t $ENV:1.7 -v "ssh $BAT3$FQDN" \; selectl tiled \; splitw -t $ENV:1.8 -v "ssh $WEB1$FQDN" \; selectl tiled \; splitw -t $ENV:1.9 -v "ssh $WEB2$FQDN" \; selectl tiled \; splitw -t $ENV:1.10 -v "ssh $WEB3$FQDN" \; selectl tiled \; splitw -t $ENV:1.11 -v "ssh $WEB4$FQDN" \; selectl tiled \; splitw -t $ENV:1.12 -v "ssh $WEB5$FQDN" \; selectl tiled \; splitw -t $ENV:1.13 -v "ssh $WEB6$FQDN" \; selectl tiled \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
+
+# Command for a 15 server environment (6 app, 3 bat and 6 web)
+SVR15='tmux -f $HOME/${ENV}_tmux.conf new -s $ENV "ssh $APP1$FQDN" \; renamew -t $ENV:1 ALL \; splitw -t $ENV:1.1 -h "ssh $APP2$FQDN" \; splitw -t $ENV:1.2 -h "ssh $APP3$FQDN" \; splitw -t $ENV1.3 -v "ssh $APP4$FQDN" \; splitw -t $ENV:1.4 -v "ssh $APP5$FQDN" \; splitw -t $ENV:1.5 -v "ssh $APP6$FQDN" \; selectl tiled \; splitw -t $ENV:1.6 -v "ssh $BAT1$FQDN" \; selectl tiled \; splitw -t $ENV:1.7 -v "ssh $BAT2$FQDN" \; selectl tiled \; splitw -t $ENV:1.8 -v "ssh $BAT3$FQDN" \; selectl tiled \; splitw -t $ENV:1.9 -v "ssh $WEB1$FQDN" \; selectl tiled \; splitw -t $ENV:1.10 -v "ssh $WEB2$FQDN" \; selectl tiled \; splitw -t $ENV:1.11 -v "ssh $WEB3$FQDN" \; selectl tiled \; splitw -t $ENV:1.12 -v "ssh $WEB4$FQDN" \; selectl tiled \; splitw -t $ENV:1.13 -v "ssh $WEB5$FQDN" \; selectl tiled \; splitw -t $ENV:1.14 -v "ssh $WEB6$FQDN" \; selectl tiled \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
+
+# Command for 17 Server environment (6 app, 3 bat, 6 web and 2 IB)
+SVR17A='tmux -f $HOME/${ENV}_tmux.conf new -s $ENV "ssh $APP1$FQDN" \; renamew -t $ENV:1 ALL \; splitw -t $ENV:1.1 -h "ssh $APP2$FQDN" \; splitw -t $ENV:1.2 -h "ssh $APP3$FQDN" \; splitw -t $ENV:1.3 -v "ssh $APP4$FQDN" \; splitw -t $ENV:1.4 -v "ssh $APP5$FQDN" \; splitw -t $ENV:1.5 -v "ssh $APP6$FQDN" \; selectl tiled \; splitw -t $ENV:1.6 -v "ssh $BAT1$FQDN" \; selectl tiled \; splitw -t $ENV:1.7 -v "ssh $BAT2$FQDN" \; selectl tiled \; splitw -t $ENV:1.8 -v "ssh $BAT3$FQDN" \; selectl tiled \; splitw -t $ENV:1.9 -v "ssh $WEB1$FQDN" \; selectl tiled \; splitw -t $ENV:1.10 -v "ssh $WEB2$FQDN" \; selectl tiled \; splitw -t $ENV:1.11 -v "ssh $WEB3$FQDN" \; selectl tiled \; splitw -t $ENV:1.12 -v "ssh $WEB4$FQDN" \; selectl tiled \; splitw -t $ENV:1.13 -v "ssh $WEB5$FQDN" \; selectl tiled \; splitw -t $ENV:1.14 -v "ssh $WEB6$FQDN" \; selectl tiled \; splitw -t $ENV:1.15 -v "ssh $WEI1$FQDN" \; selectl tiled \; splitw -t $ENV:1.16 -v "ssh $WEI2$FQDN" \; selectl tiled \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
+
+# Command for 17 Server environment (6 app, 2 IB, 3 bat and 6 web)
+SVR17B='tmux -f $HOME/${ENV}_tmux.conf new -s $ENV "ssh $APP1$FQDN" \; renamew -t $ENV:1 ALL \; splitw -t $ENV:1.1 -h "ssh $APP2$FQDN" \; splitw -t $ENV:1.2 -h "ssh $APP3$FQDN" \; splitw -t $ENV:1.3 -v "ssh $APP4$FQDN" \; splitw -t $ENV:1.4 -v "ssh $APP5$FQDN" \; splitw -t $ENV:1.5 -v "ssh $APP6$FQDN" \; selectl tiled \; splitw -t $ENV:1.6 -v "ssh $API1$FQDN" \; selectl tiled \; splitw -t $ENV:1.7 -v "ssh $API2$FQDN" \; selectl tiled \; splitw -t $ENV:1.8 -v "ssh $BAT1$FQDN" \; selectl tiled \; splitw -t $ENV:1.9 -v "ssh $BAT2$FQDN" \; selectl tiled \; splitw -t $ENV:1.10 -v "ssh $BAT3$FQDN" \; selectl tiled \; splitw -t $ENV:1.11 -v "ssh $WEB1$FQDN" \; selectl tiled \; splitw -t $ENV:1.12 -v "ssh $WEB2$FQDN" \; selectl tiled \; splitw -t $ENV:1.13 -v "ssh $WEB3$FQDN" \; selectl tiled \; splitw -t $ENV:1.14 -v "ssh $WEB4$FQDN" \; selectl tiled \; splitw -t $ENV:1.15 -v "ssh $WEB5$FQDN" \; selectl tiled \; splitw -t $ENV:1.16 -v "ssh $WEB6$FQDN" \; selectl tiled \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
+
+
+#################################################
+# KEY BINDING VARIABLES FOR DYNAMIC TMUX CONFIG #
+#################################################
+
+
+
+# Select ALL servers binding
+
+# Select all 3 panes
+SALL3='bind-key A selectp -t $ENV:1.2 \; send-keys escape \; selectp -t $ENV:1.3 \; send-keys escape \; selectp -t $ENV:1.1 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all 6 panes
+SALL6='bind-key A selectp -t $ENV:1.2 \; send-keys escape \; selectp -t $ENV:1.3 \; send-keys escape \; selectp -t $ENV:1.4 \; send-keys escape \; selectp -t $ENV:1.5 \; send-keys escape \; selectp -t $ENV:1.6 \; send-keys escape \; selectp -t $ENV:1.1 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all 10 panes
+SALL10='bind-key A selectp -t $ENV:1.2 \; send-keys escape \; selectp -t $ENV:1.3 \; send-keys escape \; selectp -t $ENV:1.4 \; send-keys escape \; selectp -t $ENV:1.5 \; send-keys escape \; selectp -t $ENV:1.6 \; send-keys escape \; selectp -t $ENV:1.7 \; send-keys escape \; selectp -t $ENV:1.8 \; send-keys escape \; selectp -t $ENV:1.9 \; send-keys escape \; selectp -t $ENV:1.10 \; send-keys escape \; selectp -t $ENV:1.1 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all 12 panes
+SALL12='bind-key A selectp -t $ENV:1.2 \; send-keys escape \; selectp -t $ENV:1.3 \; send-keys escape \; selectp -t $ENV:1.4 \; send-keys escape \; selectp -t $ENV:1.5 \; send-keys escape \; selectp -t $ENV:1.6 \; send-keys escape \; selectp -t $ENV:1.7 \; send-keys escape \; selectp -t $ENV:1.8 \; send-keys escape \; selectp -t $ENV:1.9 \; send-keys escape \; selectp -t $ENV:1.10 \; send-keys escape \; selectp -t $ENV:1.11 \; send-keys escape \; selectp -t $ENV:1.12 \; send-keys escape \; selectp -t $ENV:1.1 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all 14 panes
+SALL14='bind-key A selectp -t $ENV:1.2 \; send-keys escape \; selectp -t $ENV:1.3 \; send-keys escape \; selectp -t $ENV:1.4 \; send-keys escape \; selectp -t $ENV:1.5 \; send-keys escape \; selectp -t $ENV:1.6 \; send-keys escape \; selectp -t $ENV:1.7 \; send-keys escape \; selectp -t $ENV:1.8 \; send-keys escape \; selectp -t $ENV:1.9 \; send-keys escape \; selectp -t $ENV:1.10 \; send-keys escape \; selectp -t $ENV:1.11 \; send-keys escape \; selectp -t $ENV:1.12 \; send-keys escape \; selectp -t $ENV:1.13 \; send-keys escape \; selectp -t $ENV:1.14 \; send-keys escape \; selectp -t $ENV:1.1 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all 15 panes
+SALL15='bind-key A selectp -t $ENV:1.2 \; send-keys escape \; selectp -t $ENV:1.3 \; send-keys escape \; selectp -t $ENV:1.4 \; send-keys escape \; selectp -t $ENV:1.5 \; send-keys escape \; selectp -t $ENV:1.6 \; send-keys escape \; selectp -t $ENV:1.7 \; send-keys escape \; selectp -t $ENV:1.8 \; send-keys escape \; selectp -t $ENV:1.9 \; send-keys escape \; selectp -t $ENV:1.10 \; send-keys escape \; selectp -t $ENV:1.11 \; send-keys escape \; selectp -t $ENV:1.12 \; send-keys escape \; selectp -t $ENV:1.13 \; send-keys escape \; selectp -t $ENV:1.14 \; send-keys escape \; selectp -t $ENV:1.15 \; send-keys escape \; selectp -t $ENV:1.1 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all 17 panes
+SALL17='bind-key A selectp -t $ENV:1.2 \; send-keys escape \; selectp -t $ENV:1.3 \; send-keys escape \; selectp -t $ENV:1.4 \; send-keys escape \; selectp -t $ENV:1.5 \; send-keys escape \; selectp -t $ENV:1.6 \; send-keys escape \; selectp -t $ENV:1.7 \; send-keys escape \; selectp -t $ENV:1.8 \; send-keys escape \; selectp -t $ENV:1.9 \; send-keys escape \; selectp -t $ENV:1.10 \; send-keys escape \; selectp -t $ENV:1.11 \; send-keys escape \; selectp -t $ENV:1.12 \; send-keys escape \; selectp -t $ENV:1.13 \; send-keys escape \; selectp -t $ENV:1.14 \; send-keys escape \; selectp -t $ENV:1.15 \; send-keys escape \; selectp -t %15 \; send-keys escape \; selectp -t $ENV:1.17 \; send-keys escape \; selectp -t $ENV:1.1 \; send-keys escape \; setw synchronize-panes on'
+
+
+
+# Select all APP servers binding
+
+# Select all app servers for 3 server environment
+SAPP3='bind-key a selectp -t $ENV:1.2 \; copy-mode \; selectp -t $ENV:1.3 \; copy-mode \; selectp -t $ENV:1.1 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all app servers for 6 server environment
+SAPP6='bind-key a selectp -t $ENV:1.3 \; copy-mode \; selectp -t $ENV:1.4 \; copy-mode \; selectp -t $ENV:1.5 \; copy-mode \; selectp -t $ENV:1.6 \; copy-mode \; selectp -t $ENV:1.2 \; send-keys escape \; selectp -t $ENV:1.1 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all app servers for 10 server environment
+SAPP10='bind-key a selectp -t $ENV:1.6 \; copy-mode \; selectp -t $ENV:1.7 \; copy-mode \; selectp -t $ENV:1.8 \; copy-mode \; selectp -t $ENV:1.9 \; copy-mode \; selectp -t $ENV:1.10 \; copy-mode \; selectp -t $ENV:1.2 \; send-keys escape \; selectp -t $ENV:1.3 \; send-keys escape \; selectp -t $ENV:1.4 \; send-keys escape \; selectp -t $ENV:1.5 \; send-keys escape \; selectp -t $ENV:1.1 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all app servers for 12 server environment
+SAPP12='bind-key a selectp -t $ENV:1.4 \; copy-mode \; selectp -t $ENV:1.5 \; copy-mode \; selectp -t $ENV:1.6 \; copy-mode \; selectp -t $ENV:1.7 \; copy-mode \; selectp -t $ENV:1.8 \; copy-mode \; selectp -t $ENV:1.9 \; copy-mode \; selectp -t $ENV:1.10 \; copy-mode \; selectp -t $ENV:1.11 \; copy-mode \; selectp -t $ENV:1.11 \; copy-mode \; selectp -t $ENV:1.2 \; send-keys escape \; selectp -t $ENV:1.3 \; send-keys escape \; selectp -t $ENV:1.1 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all app servers for 14 server environment
+SAPP14='bind-key a selectp -t $ENV:1.6 \; copy-mode \; selectp -t $ENV:1.7 \; copy-mode \; selectp -t $ENV:1.8 \; copy-mode \; selectp -t $ENV:1.9 \; copy-mode \; selectp -t $ENV:1.10 \; copy-mode \; selectp -t $ENV:1.11 \; copy-mode \; selectp -t $ENV:1.12 \; copy-mode \; selectp -t $ENV:1.13 \; copy-mode \; selectp -t $ENV:1.14 \; copy-mode \; selectp -t $ENV:1.2 \; send-keys escape \; selectp -t $ENV:1.3 \; send-keys escape \; selectp -t $ENV:1.4 \; send-keys escape \; selectp -t $ENV:1.5 \; send-keys escape \; selectp -t $ENV:1.1 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all app servers for 15 server environment
+SAPP15='bind-key a selectp -t $ENV:1.7 \; copy-mode \; selectp -t $ENV:1.8 \; copy-mode \; selectp -t $ENV:1.9 \; copy-mode \; selectp -t $ENV:1.10 \; copy-mode \; selectp -t $ENV:1.11 \; copy-mode \; selectp -t $ENV:1.12 \; copy-mode \; selectp -t $ENV:1.13 \; copy-mode \; selectp -t $ENV:1.14 \; copy-mode \; selectp -t $ENV:1.15 \; copy-mode \; selectp -t $ENV:1.2 \; send-keys escape \; selectp -t $ENV:1.3 \; send-keys escape \; selectp -t $ENV:1.4 \; send-keys escape \; selectp -t $ENV:1.5 \; send-keys escape \; selectp -t $ENV:1.6 \; send-keys escape \; selectp -t $ENV:1.1 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all app servers for 17A server environment
+SAPP17A='bind-key a selectp -t $ENV:1.7 \; copy-mode \; selectp -t $ENV:1.8 \; copy-mode \; selectp -t $ENV:1.9 \; copy-mode \; selectp -t $ENV:1.10 \; copy-mode \; selectp -t $ENV:1.11 \; copy-mode \; selectp -t $ENV:1.12 \; copy-mode \; selectp -t $ENV:1.13 \; copy-mode \; selectp -t $ENV:1.14 \; copy-mode \; selectp -t $ENV:1.15 \; copy-mode \; selectp -t $ENV:1.16 \; copy-mode \; selectp -t $ENV:1.17 \; copy-mode \; selectp -t $ENV:1.2 \; send-keys escape \; selectp -t $ENV:1.3 \; send-keys escape \; selectp -t $ENV:1.4 \; send-keys escape \; selectp -t $ENV:1.5 \; send-keys escape \; selectp -t $ENV:1.6 \; send-keys escape \; selectp -t $ENV:1.1 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all app servers for 17B server environment
+SAPP17B='bind-key a selectp -t $ENV:1.9 \; copy-mode \; selectp -t $ENV:1.10 \; copy-mode \; selectp -t $ENV:1.11 \; copy-mode \; selectp -t $ENV:1.12 \; copy-mode \; selectp -t $ENV:1.13 \; copy-mode \; selectp -t $ENV:1.14 \; copy-mode \; selectp -t $ENV:1.15 \; copy-mode \; selectp -t $ENV:1.16 \; copy-mode \; selectp -t $ENV:1.17 \; copy-mode \; selectp -t $ENV:1.2 \; send-keys escape \; selectp -t $ENV:1.3 \; send-keys escape \; selectp -t $ENV:1.4 \; send-keys escape \; selectp -t $ENV:1.5 \; send-keys escape \; selectp -t $ENV:1.6 \; send-keys escape \; selectp -t $ENV:1.7 \; send-keys escape \; selectp -t $ENV:1.8 \; send-keys escape \; selectp -t $ENV:1.1 \; send-keys escape \; setw synchronize-panes on'
+
+
+
+# Select all BAT servers binding
+
+# Select all bat servers for 3 server environment
+SBAT3='bind-key b selectp -t $ENV:1.1 \; copy-mode \; selectp -t $ENV:1.3 \; copy-mode \; selectp -t $ENV:1.2 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all bat servers for 6 server environment
+SBAT6='bind-key b selectp -t $ENV:1.1 \; copy-mode \; selectp -t $ENV:1.2 \; copy-mode \; selectp -t $ENV:1.5 \; copy-mode \; selectp -t $ENV:1.6 \; copy-mode \; selectp -t $ENV:1.4 \; send-keys escape \; selectp -t $ENV:1.3 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all bat servers for 10 server environment
+SBAT10='bind-key b selectp -t $ENV:1.1 \; copy-mode \; selectp -t $ENV:1.2 \; copy-mode \; selectp -t $ENV:1.3 \; copy-mode \; selectp -t $ENV:1.4 \; copy-mode \; selectp -t $ENV:1.5 \; copy-mode \; selectp -t $ENV:1.8 \; copy-mode \; selectp -t $ENV:1.9 \; copy-mode \; selectp -t $ENV:1.10 \; copy-mode \; selectp -t $ENV:1.7 \; send-keys escape \; selectp -t $ENV:1.6 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all bat servers for 12 server environment
+SBAT12='bind-key b selectp -t $ENV:1.1 \; copy-mode \; selectp -t $ENV:1.2 \; copy-mode \; selectp -t $ENV:1.3 \; copy-mode \; selectp -t $ENV:1.7 \; copy-mode \; selectp -t $ENV:1.8 \; copy-mode \; selectp -t $ENV:1.9 \; copy-mode \; selectp -t $ENV:1.10 \; copy-mode \; selectp -t $ENV:1.11 \; copy-mode \; selectp -t $ENV:1.12 \; copy-mode \; selectp -t $ENV:1.5 \; send-keys escape \; selectp -t $ENV:1.4 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all bat servers for 14 server environment
+SBAT14='bind-key b selectp -t $ENV:1.1 \; copy-mode \; selectp -t $ENV:1.2 \; copy-mode \; selectp -t $ENV:1.3 \; copy-mode \; selectp -t $ENV:1.4 \; copy-mode \; selectp -t $ENV:1.5 \; copy-mode \; selectp -t $ENV:1.9 \; copy-mode \; selectp -t $ENV:1.10 \; copy-mode \; selectp -t $ENV:1.11 \; copy-mode \; selectp -t $ENV:1.12 \; copy-mode \; selectp -t $ENV:1.13 \; copy-mode \; selectp -t $ENV:1.14 \; copy-mode \; selectp -t $ENV:1.7 \; send-keys escape \; selectp -t $ENV:1.8 \; send-keys escape \; selectp -t $ENV:1.6 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all bat servers for 15 server environment
+SBAT15='bind-key b selectp -t $ENV:1.1 \; copy-mode \; selectp -t $ENV:1.2 \; copy-mode \; selectp -t $ENV:1.3 \; copy-mode \; selectp -t $ENV:1.4 \; copy-mode \; selectp -t $ENV:1.5 \; copy-mode \; selectp -t $ENV:1.6 \; copy-mode \; selectp -t $ENV:1.10 \; copy-mode \; selectp -t $ENV:1.11 \; copy-mode \; selectp -t $ENV:1.12 \; copy-mode \; selectp -t $ENV:1.13 \; copy-mode \; selectp -t $ENV:1.14 \; copy-mode \; selectp -t $ENV:1.15 \; copy-mode \; selectp -t $ENV:1.8 \; send-keys escape \; selectp -t $ENV:1.9 \; send-keys escape \; selectp -t $ENV:1.7 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all bat servers for 17A server environment
+SBAT17A='bind-key b selectp -t $ENV:1.1 \; copy-mode \; selectp -t $ENV:1.2 \; copy-mode \; selectp -t $ENV:1.3 \; copy-mode \; selectp -t $ENV:1.4 \; copy-mode \; selectp -t $ENV:1.5 \; copy-mode \; selectp -t $ENV:1.6 \; copy-mode \; selectp -t $ENV:1.10 \; copy-mode \; selectp -t $ENV:1.11 \; copy-mode \; selectp -t $ENV:1.12 \; copy-mode \; selectp -t $ENV:1.13 \; copy-mode \; selectp -t $ENV:1.14 \; copy-mode \; selectp -t $ENV:1.15 \; copy-mode \; selectp -t $ENV:1.16 \; copy-mode \; selectp -t $ENV:1.17 \; copy-mode \; selectp -t $ENV:1.8 \; send-keys escape \; selectp -t $ENV:1.9 \; send-keys escape \; selectp -t $ENV:1.7 \; send-keys escape \; setw synchronize-panes on'
+
+# Select bat app servers for 17B server environment
+SBAT17B='bind-key b selectp -t $ENV:1.1 \; copy-mode \; selectp -t $ENV:1.2 \; copy-mode \; selectp -t $ENV:1.3 \; copy-mode \; selectp -t $ENV:1.4 \; copy-mode \; selectp -t $ENV:1.5 \; copy-mode \; selectp -t $ENV:1.6 \; copy-mode \; selectp -t $ENV:1.7 \; copy-mode \; selectp -t $ENV:1.8 \; copy-mode \; selectp -t $ENV:1.12 \; copy-mode \; selectp -t $ENV:1.13 \; copy-mode \; selectp -t $ENV:1.14 \; copy-mode \; selectp -t $ENV:1.15 \; copy-mode \; selectp -t $ENV:1.16 \; copy-mode \; selectp -t $ENV:1.17 \; copy-mode \; selectp -t $ENV:1.10 \; send-keys escape \; selectp -t $ENV:1.11 \; send-keys escape \; selectp -t $ENV:1.9 \; send-keys escape \; setw synchronize-panes on'
+
+
+
+# Select all WEB servers binding
+
+# Select all web servers for 3 server environment
+SWEB3='bind-key w selectp -t $ENV:1.1 \; copy-mode \; selectp -t $ENV:1.2 \; copy-mode \; selectp -t $ENV:1.3 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all web servers for 6 server environment
+SWEB6='bind-key w selectp -t $ENV:1.1 \; copy-mode \; selectp -t $ENV:1.2 \; copy-mode \; selectp -t $ENV:1.3 \; copy-mode \; selectp -t $ENV:1.4 \; copy-mode \; selectp -t $ENV:1.6 \; send-keys escape \; selectp -t $ENV:1.5 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all web servers for 10 server environment
+SWEB10='bind-key w selectp -t $ENV:1.1 \; copy-mode \; selectp -t $ENV:1.2 \; copy-mode \; selectp -t $ENV:1.3 \; copy-mode \; selectp -t $ENV:1.4 \; copy-mode \; selectp -t $ENV:1.5 \; copy-mode \; selectp -t $ENV:1.6 \; copy-mode \; selectp -t $ENV:1.7 \; copy-mode \; selectp -t $ENV:1.9 \; send-keys escape \; selectp -t $ENV:1.10 \; send-keys escape \; selectp -t $ENV:1.8 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all web servers for 12 server environment
+SWEB12='bind-key w selectp -t $ENV:1.1 \; copy-mode \; selectp -t $ENV:1.2 \; copy-mode \; selectp -t $ENV:1.3 \; copy-mode \; selectp -t $ENV:1.4 \; copy-mode \; selectp -t $ENV:1.5 \; copy-mode \; selectp -t $ENV:1.6 \; copy-mode \; selectp -t $ENV1.8 \; send-keys escape \; selectp -t $ENV1.9 \; send-keys escape \; selectp -t $ENV1.10 \; send-keys escape \; selectp -t $ENV1.11 \; send-keys escape \; selectp -t $ENV1.12 \; send-keys escape \; selectp -t $ENV:1.7 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all web servers for 14 server environment
+SWEB14='bind-key w selectp -t $ENV:1.1 \; copy-mode \; selectp -t $ENV:1.2 \; copy-mode \; selectp -t $ENV:1.3 \; copy-mode \; selectp -t $ENV:1.4 \; copy-mode \; selectp -t $ENV:1.5 \; copy-mode \; selectp -t $ENV:1.6 \; copy-mode \; selectp -t $ENV:1.7 \; copy-mode \; selectp -t $ENV:1.8 \; copy-mode \; selectp -t $ENV:1.10 \; send-keys escape \; selectp -t $ENV:1.11 \; send-keys escape \; selectp -t $ENV:1.12 \; send-keys escape \; selectp -t $ENV:1.13 \; send-keys escape \; selectp -t $ENV:1.14 \; send-keys escape \; selectp -t $ENV:1.9 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all web servers for 15 server environment
+SWEB15='bind-key w selectp -t $ENV:1.1 \; copy-mode \; selectp -t $ENV:1.2 \; copy-mode \; selectp -t $ENV:1.3 \; copy-mode \; selectp -t $ENV:1.4 \; copy-mode \; selectp -t $ENV:1.5 \; copy-mode \; selectp -t $ENV:1.6 \; copy-mode \; selectp -t $ENV:1.7 \; copy-mode \; selectp -t $ENV:1.8 \; copy-mode \; selectp -t $ENV:1.9 \; copy-mode \; selectp -t $ENV:1.11 \; send-keys escape \; selectp -t $ENV:1.12 \; send-keys escape \; selectp -t $ENV:1.13 \; send-keys escape \; selectp -t $ENV:1.14 \; send-keys escape \; selectp -t $ENV:1.15 \; send-keys escape \; selectp -t $ENV:1.10 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all web servers for 17A server environment
+SWEB17A='bind-key w selectp -t $ENV:1.1 \; copy-mode \; selectp -t $ENV:1.2 \; copy-mode \; selectp -t $ENV:1.3 \; copy-mode \; selectp -t $ENV:1.4 \; copy-mode \; selectp -t $ENV:1.5 \; copy-mode \; selectp -t $ENV:1.6 \; copy-mode \; selectp -t $ENV:1.7 \; copy-mode \; selectp -t $ENV:1.8 \; copy-mode \; selectp -t $ENV:1.9 \; copy-mode \; selectp -t $ENV:1.11 \; send-keys escape \; selectp -t $ENV:1.12 \; send-keys escape \; selectp -t $ENV:1.13 \; send-keys escape \; selectp -t $ENV:1.14 \; send-keys escape \; selectp -t $ENV:1.15 \; send-keys escape \; selectp -t $ENV:1.16 \; send-keys escape \; selectp -t $ENV:1.17 \; send-keys escape \; selectp -t $ENV:1.10 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all web servers for 17B server environment
+SWEB17B='bind-key w selectp -t $ENV:1.1 \; copy-mode \; selectp -t $ENV:1.2 \; copy-mode \; selectp -t $ENV:1.3 \; copy-mode \; selectp -t $ENV:1.4 \; copy-mode \; selectp -t $ENV:1.5 \; copy-mode \; selectp -t $ENV:1.6 \; copy-mode \; selectp -t $ENV:1.7 \; copy-mode \; selectp -t $ENV:1.8 \; copy-mode \; selectp -t $ENV:1.9 \; copy-mode \; selectp -t $ENV:1.10 \; copy-mode \; selectp -t $ENV:1.11 \; copy-mode \; selectp -t $ENV:1.13 \; send-keys escape \; selectp -t $ENV:1.14 \; send-keys escape \; selectp -t $ENV:1.15 \; send-keys escape \; selectp -t $ENV:1.16 \; send-keys escape \; selectp -t $ENV:1.17 \; send-keys escape \; selectp -t $ENV:1.12 \; send-keys escape \; setw synchronize-panes on'
+
+
+
+# Select IB servers binding
+
+# Select all IB servers for 10 server environment
+SIB10='bind-key i selectp -t $ENV:1.1 \; copy-mode \; selectp -t $ENV:1.2 \; copy-mode \; selectp -t $ENV:1.3 \; copy-mode \; selectp -t $ENV:1.6 \; copy-mode \; selectp -t $ENV:1.7 \; copy-mode \; selectp -t $ENV:1.8 \; copy-mode \; selectp -t $ENV:1.9 \; copy-mode \; selectp -t $ENV:1.10 \; copy-mode \; selectp -t $ENV:1.5 \; send-keys escape \; selectp -t $ENV:1.4 \; send-keys escape \; setw synchronize-panes on' 
+
+# Select all IB servers for 14 server environment
+SIB14='bind-key i selectp -t $ENV:1.1 \; copy-mode \; selectp -t $ENV:1.2 \; copy-mode \; selectp -t $ENV:1.3 \; copy-mode \; selectp -t $ENV:1.6 \; copy-mode \; selectp -t $ENV:1.7 \; copy-mode \; selectp -t $ENV:1.8 \; copy-mode \; selectp -t $ENV:1.9 \; copy-mode \; selectp -t $ENV:1.10 \; copy-mode \; selectp -t $ENV:1.11 \; copy-mode \; selectp -t $ENV:1.11 \; copy-mode \; selectp -t $ENV:1.13 \; copy-mode \; selectp -t $ENV:1.14 \; copy-mode \; selectp -t $ENV:1.5 \; send-keys escape \; selectp -t $ENV:1.4 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all IB servers for 17A server environment
+SIB17A='bind-key i selectp -t $ENV:1.1 \; copy-mode \; selectp -t $ENV:1.2 \; copy-mode \; selectp -t $ENV:1.3 \; copy-mode \; selectp -t $ENV:1.4 \; copy-mode \; selectp -t $ENV:1.5 \; copy-mode \; selectp -t $ENV:1.6 \; copy-mode \; selectp -t $ENV:1.7 \; copy-mode \; selectp -t $ENV:1.8 \; copy-mode \; selectp -t $ENV:1.9 \; copy-mode \; selectp -t $ENV:1.10 \; copy-mode \; selectp -t $ENV:1.11 \; copy-mode \; selectp -t $ENV:1.12 \; copy-mode \; selectp -t $ENV:1.13 \; copy-mode \; selectp -t $ENV:1.14 \; copy-mode \; selectp -t $ENV:1.15 \; copy-mode \; selectp -t $ENV:1.17 \; send-keys escape \; selectp -t $ENV:1.16 \; send-keys escape \; setw synchronize-panes on'
+
+# Select all IB servers for 17B server environment
+SIB17B='bind-key i selectp -t $ENV:1.1 \; copy-mode \; selectp -t $ENV:1.2 \; copy-mode \; selectp -t $ENV:1.3 \; copy-mode \; selectp -t $ENV:1.4 \; copy-mode \; selectp -t $ENV:1.5 \; copy-mode \; selectp -t $ENV:1.6 \; copy-mode \; selectp -t $ENV:1.9 \; copy-mode \; selectp -t $ENV:1.10 \; copy-mode \; selectp -t $ENV:1.11 \; copy-mode \; selectp -t $ENV:1.12 \; copy-mode \; selectp -t $ENV:1.13 \; copy-mode \; selectp -t $ENV:1.14 \; copy-mode \; selectp -t $ENV:1.15 \; copy-mode \; selectp -t $ENV:1.16 \; copy-mode \; selectp -t $ENV:1.17 \; copy-mode \; selectp -t $ENV:1.8 \; send-keys escape \; selectp -t $ENV:1.7 \; send-keys escape \; setw synchronize-panes on'
+
+
+
+# Split servers into seperate windows binding
+
+# Split servers for 3 server environment
+SPLT3='bind-key s break-pane -d -s $ENV:1.2 \; break-pane -d -s $ENV:1.2 \; renamew -t $ENV:1 AppSvr \; renamew -t $ENV:2 BatSvr \; renamew -t $ENV:3 WebSvr \; setw synchronize-panes off'
+
+# Split servers for 6 server environment
+SPLT6='bind-key s break-pane -d -s $ENV:1.3 \; break-pane -d -s $ENV:1.3 \; join-pane -s $ENV:3 -t $ENV:2 \; break-pane -d -s $ENV:1.3 \; break-pane -d -s $ENV:1.3 \; join-pane -s $ENV:4 -t $ENV:3 \; renamew -t $ENV:1 AppSvrs \; renamew -t $ENV:2 BatSvrs \; renamew -t $ENV:3 WebSvrs \; selectw -t $ENV:2 \; selectp -t $ENV:2.1 \; selectl even-vertical \; setw synchronize-panes on \; selectw -t $ENV:3 \; selectp -t $ENV:3.1 \; selectl even-vertical \; setw synchronize-panes on \; selectw -t $ENV:1 \; selectp -t $ENV:1.1 \; selectl even-vertical \; setw synchronize-panes on'
+
+# Split servers for 10 server environment
+SPLT10='bind-key s break-pane -d -s $ENV:1.6 \; break-pane -d -s $ENV:1.6 \; join-pane -s $ENV:3 -t $ENV:2 \; break-pane -d -s $ENV:1.6 \; break-pane -d -s $ENV:1.6 \; break-pane -d -s $ENV:1.6 \; join-pane -s $ENV:4 -t $ENV:3 \; join-pane -s $ENV:5 -t $ENV:3.2 \; renamew -t $ENV:1 AppSvrs \; renamew -t $ENV:2 BatSvrs \; renamew -t $ENV:3 WebSvrs \; selectw -t $ENV:2 \; selectp -t $ENV:2.1 \; selectl even-vertical \; setw synchronize-panes on \; selectw -t $ENV:3 \; selectp -t $ENV:3.1 \; selectl even-vertical \; setw synchronize-panes on \; selectw -t $ENV:1 \; selectp -t $ENV:1.1 \; selectl tiled \; setw synchronize-panes on'
+
+# Split servers for 12 server environment
+SPLT12='bind-key s breakp -d -s $ENV:1.4 \; breakp -d -s $ENV:1.4 \; breakp -d -s $ENV:1.4 \; join-pane -s $ENV:3 -t $ENV:2 \; join-pane -s $ENV:4 -t $ENV:2.2 \; breakp -d -s $ENV:1.4 \; breakp -d -s $ENV:1.4 \; breakp -d -s $ENV:1.4 \; breakp -d -s $ENV:1.4 \; breakp -d -s $ENV:1.4 \; breakp -d -s $ENV:1.4 \; join-pane -s $ENV:4 -t $ENV:3 \; join-pane -s $ENV:5 -t $ENV:3.2 \; join-pane -s $ENV:6 -t $ENV:3.3 \; join-pane -s $ENV:7 -t $ENV:3.4 \; selectw -t $ENV:3 \; selectl even-vertical \; join-pane -s $ENV:8 -t $ENV:3.5 \; renamew -t $ENV:1 AppSvrs \; renamew -t $ENV:2 BatSvrs \; renamew -t $ENV:3 WebSvrs \; selectw -t $ENV:2 \; selectp -t $ENV:2.1 \; selectl even-vertical \; setw synchronize-panes on \; selectw -t $ENV:3 \; selectp -t $ENV:3.1 \; selectl tiled \; setw synchronize-panes on \; selectw -t $ENV:1 \; selectp -t $ENV:1.1 \; selectl even-vertical \; setw synchronize-panes on'
+
+# Split servers for 14 server environment
+SPLT14='bind-key s breakp -d -s $ENV:1.6 \; breakp -d -s $ENV:1.6 \; breakp -d -s $ENV:1.6 \; join-pane -s $ENV:3 -t $ENV:2 \; join-pane -s $ENV:4 -t $ENV:2.2 \; breakp -d -s $ENV:1.6 \; breakp -d -s $ENV:1.6 \; breakp -d -s $ENV:1.6 \; breakp -d -s $ENV:1.6 \; breakp -d -s $ENV:1.6 \; breakp -d -s $ENV:1.6 \; join-pane -s $ENV:4 -t $ENV:3 \; join-pane -s $ENV:5 -t $ENV:3.2 \; join-pane -s $ENV:6 -t $ENV:3.3 \; join-pane -s $ENV:7 -t $ENV:3.4 \; selectw -t $ENV:3 \; selectl even-vertical \; join-pane -s $ENV:8 -t $ENV:3.5 \; renamew -t $ENV:1 AppSvrs \; renamew -t $ENV:2 BatSvrs \; renamew -t $ENV:3 WebSvrs \; selectw -t $ENV:2 \; selectp -t $ENV:2.1 \; selectl even-vertical \; setw synchronize-panes on \; selectw -t $ENV:3 \; selectp -t $ENV:3.1 \; selectl tiled \; setw synchronize-panes on \; selectw -t $ENV:1 \; selectp -t $ENV:1.1 \; selectl tiled \; setw synchronize-panes on'
+
+# Split servers for 15 server environment
+SPLT15='bind-key s breakp -d -s $ENV:1.7 \; breakp -d -s $ENV:1.7 \; breakp -d -s $ENV:1.7 \; join-pane -s $ENV:3 -t $ENV:2 \; join-pane -s $ENV:4 -t $ENV:2.2 \; breakp -d -s $ENV:1.7 \; breakp -d -s $ENV:1.7 \; breakp -d -s $ENV:1.7 \; breakp -d -s $ENV:1.7 \; breakp -d -s $ENV:1.7 \; breakp -d -s $ENV:1.7 \; join-pane -s $ENV:4 -t $ENV:3 \; join-pane -s $ENV:5 -t $ENV:3.2 \; join-pane -s $ENV:6 -t $ENV:3.3 \; join-pane -s $ENV:7 -t $ENV:3.4 \; selectw -t $ENV:3 \; selectl even-vertical \; join-pane -s $ENV:8 -t $ENV:3.5 \; renamew -t $ENV:1 AppSvrs \; renamew -t $ENV:2 BatSvrs \; renamew -t $ENV:3 WebSvrs \; selectw -t $ENV:2 \; selectp -t $ENV:2.1 \; selectl even-vertical \; setw synchronize-panes on \; selectw -t $ENV:3 \; selectp -t $ENV:3.1 \; selectl tiled \; setw synchronize-panes on \; selectw -t $ENV:1 \; selectp -t $ENV:1.1 \; selectl tiled \; setw synchronize-panes on'
+
+# Split servers for 17A server environment
+SPLT17A='bind-key s breakp -d -s $ENV:1.7 \; breakp -d -s $ENV:1.7 \; breakp -d -s $ENV:1.7 \; join-pane -s $ENV:3 -t $ENV:2 \; join-pane -s $ENV:4 -t $ENV:2.2 \; breakp -d -s $ENV:1.7 \; breakp -d -s $ENV:1.7 \; breakp -d -s $ENV:1.7 \; breakp -d -s $ENV:1.7 \; breakp -d -s $ENV:1.7 \; breakp -d -s $ENV:1.7 \; breakp -d -s $ENV:1.7 \; breakp -d -s $ENV:1.7 \; join-pane -s $ENV:4 -t $ENV:3 \; join-pane -s $ENV:5 -t $ENV:3.2 \; join-pane -s $ENV:6 -t $ENV:3.3 \; join-pane -s $ENV:7 -t $ENV:3.4 \; selectw -t $ENV:3 \; selectl even-vertical \; join-pane -s $ENV:8 -t $ENV:3.5 \; join-pane -s $ENV:9 -t $ENV:3.6 \; selectl even-vertical \; join-pane -s $ENV:10 -t $ENV:3.7 \; selectl even-vertical \; renamew -t $ENV:1 AppSvrs \; renamew -t $ENV:2 BatSvrs \; renamew -t $ENV:3 WebSvrs \; selectw -t $ENV:2 \; selectp -t $ENV:2.1 \; selectl even-vertical \; setw synchronize-panes on \; selectw -t $ENV:3 \; selectp -t $ENV:3.1 \; selectl tiled \; setw synchronize-panes on \; selectw -t $ENV:1 \; selectp -t $ENV:1.1 \; selectl tiled \; setw synchronize-panes on'
+
+#Split servers for 17B server environment (6A 2IB 3B 6W)
+SPLT17B='bind-key s breakp -d -s $ENV:1.9 \; breakp -d -s $ENV:1.9 \; breakp -d -s $ENV:1.9 \; join-pane -s $ENV:3 -t $ENV:2 \; join-pane -s $ENV:4 -t $ENV:2.2 \; breakp -d -s $ENV:1.9 \; breakp -d -s $ENV:1.9 \; breakp -d -s $ENV:1.9 \; breakp -d -s $ENV:1.9 \; breakp -d -s $ENV:1.9 \; breakp -d -s $ENV:1.9 \; join-pane -s $ENV:4 -t $ENV:3 \; join-pane -s $ENV:5 -t $ENV:3.2 \; join-pane -s $ENV:6 -t $ENV:3.3 \; join-pane -s $ENV:7 -t $ENV:3.4 \; selectw -t $ENV:3 \; selectl even-vertical \; join-pane -s $ENV:8 -t $ENV:3.5 \; renamew -t $ENV:1 AppSvrs \; renamew -t $ENV:2 BatSvrs \; renamew -t $ENV:3 WebSvrs \; selectw -t $ENV:2 \; selectp -t $ENV:2.1 \; selectl even-vertical \; setw synchronize-panes on \; selectw -t $ENV:3 \; selectp -t $ENV:3.1 \; selectl tiled \; setw synchronize-panes on \; selectw -t $ENV:1 \; selectp -t $ENV:1.1 \; selectl tiled \; setw synchronize-panes on'
+
+
+
+# Join all servers back to one window
+
+# Join servers for 3 server environment
+JOIN3='bind-key j join-pane -s $ENV:2 -t $ENV:1 \; join-pane -s $ENV:3 -t $ENV:1.2 \; renamew -t $ENV:1 ALL \; selectl even-vertical \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
+
+# Join servers for 6 server environment
+JOIN6='bind-key j selectw -t $ENV:1 \; selectl tiled \; join-pane -s $ENV:2.1 -t $ENV:1.2 \; join-pane -s $ENV:2.1 -t $ENV:1.3 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.4 \; join-pane -s $ENV:3.1 -t $ENV:1.5 \; selectl tiled \; selectp -t $ENV:1.1 \; renamew -t $ENV:1 ALL \; setw synchronize-panes on'
+
+# Join servers for 10 server environment
+JOIN10='bind-key j selectw -t $ENV:1 \; selectl tiled \; join-pane -s $ENV:2.1 -t $ENV:1.5 \; join-pane -s $ENV:2.1 -t $ENV:1.6 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.7 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.8 \; selectl tiled \; join-pane -s $ENV:3.1 -t :1.9 \; selectl tiled \; selectp -t $ENV:1.1 \; renamew -t $ENV:1 ALL \; setw synchronize-panes on'
+
+# Join servers for 12 server environment
+JOIN12='bind-key j selectw -t $ENV:1 \; selectl tiled \; join-pane -s $ENV:2.1 -t $ENV:1.3 \; join-pane -s $ENV:2.1 -t $ENV:1.4 \; join-pane -s $ENV:2.1 -t $ENV:1.5 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.6 \; join-pane -s $ENV:3.1 -t $ENV:1.7 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.8 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.9 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.10 \; join-pane -s $ENV:3.1 -t $ENV:1.11 \; selectl tiled \; renamew -t $ENV:1 ALL \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
+
+# Join servers for 14 server environment
+JOIN14='bind-key j selectw -t $ENV:1 \; selectl tiled \; join-pane -s $ENV:2.1 -t $ENV:1.5 \; join-pane -s $ENV:2.1 -t $ENV:1.6 \; selectl tiled \; join-pane -s $ENV:2.1 -t $ENV:1.7 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.8 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.9 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.10 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.11 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.12 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.13 \; selectl tiled \; renamew -t $ENV:1 ALL \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
+
+# Join servers for 15 server environment
+JOIN15='bind-key j selectw -t $ENV:1 \; selectl tiled \; join-pane -s $ENV:2.1 -t $ENV:1.6 \; join-pane -s $ENV:2.1 -t $ENV:1.7 \; selectl tiled \; join-pane -s $ENV:2.1 -t $ENV:1.8 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.9 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.10 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.11 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.12 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.13 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.14 \; selectl tiled \; renamew -t $ENV:1 ALL \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
+
+# Join servers for 17A server environment
+JOIN17A='bind-key j selectw -t $ENV:1 \; selectl tiled \; join-pane -s $ENV:2.1 -t $ENV:1.6 \; join-pane -s $ENV:2.1 -t $ENV:1.7 \; selectl tiled \; join-pane -s $ENV:2.1 -t $ENV:1.8 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.9 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.10 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.11 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.12 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.13 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.14 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.15 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.16 \; selectl tiled \; renamew -t $ENV:1 ALL \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
+
+# Join servers for 17B server environment
+JOIN17B='bind-key j selectw -t $ENV:1 \; selectl tiled \; join-pane -s $ENV:2.1 -t $ENV:1.8 \; selectl tiled \; join-pane -s $ENV:2.1 -t $ENV:1.9 \; selectl tiled \; join-pane -s $ENV:2.1 -t $ENV:1.10 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.11 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.12 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.13 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.14 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.15 \; selectl tiled \; join-pane -s $ENV:3.1 -t $ENV:1.16 \; selectl tiled \; renamew -t $ENV:1 ALL \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
+
+
+
+################
+#  FUNCTIONS   #
+################
+
+
+function prdchk()
+{
+	# To make sure you know you are 
+	# connecting to a prd environment.
+
+	echo "        ***********************"
+	echo "        *    W A R N I N G!   *"
+	echo "        ***********************"
+	echo ""
+	echo "You are connecting to a PRODUCTION environment!"
+	echo ""
+	read -r -p "Are you sure you want to do this? [y/n] " response
+	case $response in
+	     [yY][eE][sS]|[yY])
+		return
+		;;
+	     *)
+		kill -INT $$
+		;;
+	esac
+}
+
+
+# Functions to create the dynamic configs based on server environment
+
+function dynconf3()
+{
+	cat $BCONF > $HOME/${ENV}_tmux.conf
+	echo $SALL3 >> $HOME/${ENV}_tmux.conf
+	echo $SAPP3 >> $HOME/${ENV}_tmux.conf
+	echo $SBAT3 >> $HOME/${ENV}_tmux.conf
+	echo $SWEB3 >> $HOME/${ENV}_tmux.conf
+	echo $SPLT3 >> $HOME/${ENV}_tmux.conf
+	echo $JOIN3 >> $HOME/${ENV}_tmux.conf
+}
+
+function dynconf6()
+{
+	cat $BCONF > $HOME/${ENV}_tmux.conf
+	echo $SALL6 >> $HOME/${ENV}_tmux.conf
+	echo $SAPP6 >> $HOME/${ENV}_tmux.conf
+	echo $SBAT6 >> $HOME/${ENV}_tmux.conf
+	echo $SWEB6 >> $HOME/${ENV}_tmux.conf
+	echo $SPLT6 >> $HOME/${ENV}_tmux.conf
+	echo $JOIN6 >> $HOME/${ENV}_tmux.conf
+}
+
+function dynconf10()
+{
+	cat $BCONF > $HOME/${ENV}_tmux.conf
+	echo $SALL10 >> $HOME/${ENV}_tmux.conf
+	echo $SAPP10 >> $HOME/${ENV}_tmux.conf
+	echo $SBAT10 >> $HOME/${ENV}_tmux.conf
+	echo $SWEB10 >> $HOME/${ENV}_tmux.conf
+	echo $SIB10 >> $HOME/${ENV}_tmux.conf
+	echo $SPLT10 >> $HOME/${ENV}_tmux.conf
+	echo $JOIN10 >> $HOME/${ENV}_tmux.conf
+}
+
+function dynconf12()
+{
+	cat $BCONF > $HOME/${ENV}_tmux.conf
+	echo $SALL12 >> $HOME/${ENV}_tmux.conf
+	echo $SAPP12 >> $HOME/${ENV}_tmux.conf
+	echo $SBAT12 >> $HOME/${ENV}_tmux.conf
+	echo $SWEB12 >> $HOME/${ENV}_tmux.conf
+	echo $SPLT12 >> $HOME/${ENV}_tmux.conf
+	echo $JOIN12 >> $HOME/${ENV}_tmux.conf
+}
+
+function dynconf14()
+{
+	cat $BCONF > $HOME/${ENV}_tmux.conf
+	echo $SALL14 >> $HOME/${ENV}_tmux.conf
+	echo $SAPP14 >> $HOME/${ENV}_tmux.conf
+	echo $SBAT14 >> $HOME/${ENV}_tmux.conf
+	echo $SWEB14 >> $HOME/${ENV}_tmux.conf
+	echo $SIB14 >> $HOME/${ENV}_tmux.conf
+	echo $SPLT14 >> $HOME/${ENV}_tmux.conf
+	echo $JOIN14 >> $HOME/${ENV}_tmux.conf
+}
+
+function dynconf15()
+{
+	cat $BCONF > $HOME/${ENV}_tmux.conf
+	echo $SALL15 >> $HOME/${ENV}_tmux.conf
+	echo $SAPP15 >> $HOME/${ENV}_tmux.conf
+	echo $SBAT15 >> $HOME/${ENV}_tmux.conf
+	echo $SWEB15 >> $HOME/${ENV}_tmux.conf
+	echo $SPLT15 >> $HOME/${ENV}_tmux.conf
+	echo $JOIN15 >> $HOME/${ENV}_tmux.conf
+}
+
+function dynconf17A()
+{
+	cat $BCONF > $HOME/${ENV}_tmux.conf
+	echo $SALL17 >> $HOME/${ENV}_tmux.conf
+	echo $SAPP17A >> $HOME/${ENV}_tmux.conf
+	echo $SBAT17A >> $HOME/${ENV}_tmux.conf
+	echo $SWEB17A >> $HOME/${ENV}_tmux.conf
+	echo $SIB17A >> $HOME/${ENV}_tmux.conf
+	echo $SPLT17A >> $HOME/${ENV}_tmux.conf
+	echo $JOIN17A >> $HOME/${ENV}_tmux.conf
+}
+
+function dynconf17B()
+{
+	cat $BCONF > $HOME/${ENV}_tmux.conf
+	echo $SALL17 >> $HOME/${ENV}_tmux.conf
+	echo $SAPP17B >> $HOME/${ENV}_tmux.conf
+	echo $SBAT17B >> $HOME/${ENV}_tmux.conf
+	echo $SWEB17B >> $HOME/${ENV}_tmux.conf
+	echo $SIB17B >> $HOME/${ENV}_tmux.conf
+	echo $SPLT17B >> $HOME/${ENV}_tmux.conf
+	echo $JOIN17B >> $HOME/${ENV}_tmux.conf
+}
+
+# Functions to start Tmux Environments
+
+function cs900adm()
+{
+	# Variables
+	ENV='cs900adm'
+	APP1='cs900dvac02'
+	BAT1='cs900dvbc02'
+	WEB1='cs900dvwc02'
+	# Commands
+	dynconf3		# Call the proper dynamic config function
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function cs900dmo()
+{
+	# Variables
+	ENV='cs900dmo'
+	APP1='cs900dvac01'
+	BAT1='cs900dvbc01'
+	WEB1='cs900dvwc01'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function cs900dv1()
+{
+	# Variables
+	ENV='cs900dv1'
+	APP1='cs900dvac05'
+	BAT1='cs900dvbc05'
+	WEB1='cs900dvwc05'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function cs900dv2()
+{
+	# Variables
+	ENV='cs900dv2'
+	APP1='cs900dvac03'
+	BAT1='cs900dvbc03'
+	WEB1='cs900dvwc03'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function cs900lt()
+{
+	# Variables
+	ENV='cs900lt'
+	APP1='cs900ltac01'
+	APP2='cs900ltac02'
+	APP3='cs900ltac03'
+	APP4='cs900ltac04'
+	APP5='cs900ltac05'
+	APP6='cs900ltac06'
+	BAT1='cs900ltbc01'
+	BAT2='cs900ltbc02'
+	BAT3='cs900ltbc03'
+	WEB1='cs900ltwc01'
+	WEB2='cs900ltwc02'
+	WEB3='cs900ltwc03'
+	WEB4='cs900ltwc04'
+	WEB5='cs900ltwc05'
+	WEB6='cs900ltwc06'
+	# Commands
+	dynconf15
+	eval $SVR15
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function cs900prd()
+{
+	# Variables
+	ENV='cs900prd'
+	APP1='cs900prac01'
+	APP2='cs900prac02'
+	APP3='cs900prac03'
+	APP4='cs900prac04'
+	APP5='cs900prac05'
+	APP6='cs900prac06'
+	API1='cs900priac01'
+	API2='cs900priac02'
+	BAT1='cs900prbc01'
+	BAT2='cs900prbc02'
+	BAT3='cs900prbc03'
+	WEB1='cs900prwc01'
+	WEB2='cs900prwc02'
+	WEB3='cs900prwc03'
+	WEB4='cs900prwc04'
+	WEB5='cs900prwc05'
+	WEB6='cs900prwc06'
+	# Commands
+	prdchk &&			# Call the sanity check function
+	dynconf17B
+	eval $SVR17B
+	rm $HOME/${ENV}_tmux.conf
+}
+
+
+function cs900pre()
+{
+	# Variables
+	ENV='cs900pre'
+	APP1='cs900peac01'
+	APP2='cs900peac02'
+	BAT1='cs900pebc01'
+	BAT2='cs900pebc02'
+	WEB1='cs900pewc01'
+	WEB2='cs900pewc02'
+	# Commands
+	dynconf6
+	eval $SVR6
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function cs900qa()
+{
+	# Variables
+	ENV='cs900qa'
+	APP1='cs900dvac06'
+	BAT1='cs900dvbc06'
+	WEB1='cs900dvwc06'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function cs900rpt()
+{
+	# Variables
+	ENV='cs900rpt'
+	APP1='cs900rpac01'
+	APP2='cs900rpac02'
+	BAT1='cs900rpbc01'
+	BAT2='cs900rpbc02'
+	WEB1='cs900rpwc01'
+	WEB2='cs900rpwc02'
+	# Commands
+	dynconf6
+	eval $SVR6
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function cs900spt()
+{
+	# Variables
+	ENV='cs900spt'
+	APP1='cs900dvac08'
+	BAT1='cs900dvbc08'
+	WEB1='cs900dvwc08'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function cs900sys()
+{
+	# Variables
+	ENV='cs900sys'
+	APP1='cs900dvac09'
+	BAT1='cs900dvbc09'
+	WEB1='cs900dvwc09'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function cs900trn()
+{
+	# Variables
+	ENV='cs900trn'
+	APP1='cs900trac01'
+	BAT1='cs900trbc01'
+	WEB1='cs900trwc01'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function cs900tst()
+{
+	# Variables
+	ENV='cs900tst'
+	APP1='cs900dvac10'
+	BAT1='cs900dvbc10'
+	WEB1='cs900dvwc10'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function cs900upg()
+{
+	# Variables
+	ENV='cs900tst'
+	APP1='cs900dvac04'
+	BAT1='cs900dvbc04'
+	WEB1='cs900dvwc04'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function ep910adm()
+{
+	# Variables
+	ENV='ep910adm'
+	APP1='ep910dvac03'
+	BAT1='ep910dvbc03'
+	WEB1='ep910dvwc03'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function ep910dmo()
+{
+	# Variables
+	ENV='ep910dmo'
+	APP1='ep910dvac01'
+	BAT1='ep910dvbc01'
+	WEB1='ep910dvwc01'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function ep910dv1()
+{
+	# Variables
+	ENV='ep910dv1'
+	APP1='ep910dvac02'
+	BAT1='ep910dvbc02'
+	WEB1='ep910dvwc02'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function ep910lt()
+{
+	# Variables
+	ENV='ep910lt'
+	APP1='ep910ltac01'
+	APP2='ep910ltac02'
+	APP3='ep910ltac03'
+	APP4='ep910ltac04'
+	APP5='ep910ltac05'
+	APP6='ep910ltac06'
+	BAT1='ep910ltbc01'
+	BAT2='ep910ltbc02'
+	BAT3='ep910ltbc03'
+	WEB1='ep910ltwc01'
+	WEB2='ep910ltwc02'
+	WEB3='ep910ltwc03'
+	WEB4='ep910ltwc04'
+	WEB5='ep910ltwc05'
+	WEB6='ep910ltwc06'
+	WEI1='ep910ltiwc01'
+	WEI2='ep910ltiwc02'
+	# Commands
+	dynconf17A
+	eval $SVR17A
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function ep910prd()
+{
+	# Variables
+	ENV='ep910prd'
+	APP1='ep910prac01'
+	APP2='ep910prac02'
+	APP3='ep910prac03'
+	APP4='ep910prac04'
+	APP5='ep910prac05'
+	APP6='ep910prac06'
+	BAT1='ep910prbc01'
+	BAT2='ep910prbc02'
+	BAT3='ep910prbc03'
+	WEB1='ep910prwc01'
+	WEB2='ep910prwc02'
+	WEB3='ep910prwc03'
+	WEB4='ep910prwc04'
+	WEB5='ep910prwc05'
+	WEB6='ep910prwc06'
+	WEI1='ep910priwc01'
+	WEI2='ep910priwc02'
+	# Commands
+	prdchk &&
+	dynconf17A
+	eval $SVR17A
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function ep910pre()
+{
+	# Variables
+	ENV='ep910pre'
+	APP1='ep910peac01'
+	APP2='ep910peac02'
+	BAT1='ep910pebc01'
+	BAT2='ep910pebc02'
+	WEB1='ep910pewc01'
+	WEB2='ep910pewc02'
+	# Commands
+	dynconf6
+	eval $SVR6
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function ep910qa()
+{
+	# Variables
+	ENV='ep910qa'
+	APP1='ep910dvac05'
+	BAT1='ep910dvbc05'
+	WEB1='ep910dvwc05'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function ep910spt()
+{
+	# Variables
+	ENV='ep910spt'
+	APP1='ep910dvac07'
+	BAT1='ep910dvbc07'
+	WEB1='ep910dvwc07'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function ep910sys()
+{
+	# Variables
+	ENV='ep910sys'
+	APP1='ep910dvac09'
+	BAT1='ep910dvbc09'
+	WEB1='ep910dvwc09'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function ep910trn()
+{
+	# Variables
+	ENV='ep910trn'
+	APP1='ep910trac01'
+	BAT1='ep910trbc01'
+	WEB1='ep910trwc01'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function ep910tst()
+{
+	# Variables
+	ENV='ep910tst'
+	APP1='ep910dvac08'
+	BAT1='ep910dvbc08'
+	WEB1='ep910dvwc08'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function ep910upg()
+{
+	# Variables
+	ENV='ep910upg'
+	APP1='ep910dvac04'
+	BAT1='ep910dvbc04'
+	WEB1='ep910dvwc04'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function fo910adm()
+{
+	# Variables
+	ENV='fo910adm'
+	APP1='fo910dvac02'
+	BAT1='fo910dvbc02'
+	WEB1='fo910dvwc02'
+	# Commands
+	dynconf3	
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function fo910dmo()
+{
+	# Variables
+	ENV='fo910dmo'
+	APP1='fo910dvac01'
+	BAT1='fo910dvbc01'
+	WEB1='fo910dvwc01'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function fo910dv1()
+{
+	# Variables
+	ENV='fo910dv1'
+	APP1='fo910dvac03'
+	BAT1='fo910dvbc03'
+	WEB1='fo910dvwc03'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function fo910lt()
+{
+	# Variables
+	ENV='fo910lt'
+	APP1='fo910ltac01'
+	APP2='fo910ltac02'
+	APP3='fo910ltac03'
+	BAT1='fo910ltbc01'
+	BAT2='fo910ltbc02'
+	BAT3='fo910ltbc03'
+	WEB1='fo910ltwc01'
+	WEB2='fo910ltwc02'
+	WEB3='fo910ltwc03'
+	WEB4='fo910ltwc04'
+	WEB5='fo910ltwc05'
+	WEB6='fo910ltwc06'
+	# Commands
+	dynconf12
+	eval $SVR12
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function fo910prd()
+{
+	# Variables
+	ENV='fo910prd'
+	APP1='fo910prac01'
+	APP2='fo910prac02'
+	APP3='fo910prac03'
+	BAT1='fo910prbc01'
+	BAT2='fo910prbc02'
+	BAT3='fo910prbc03'
+	WEB1='fo910prwc01'
+	WEB2='fo910prwc02'
+	WEB3='fo910prwc03'
+	WEB4='fo910prwc04'
+	WEB5='fo910prwc05'
+	WEB6='fo910prwc06'
+	# Commands
+	prdchk &&
+	dynconf12
+	eval $SVR12
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function fo910pre()
+{
+	# Variables
+	ENV='fo910pre'
+	APP1='fo910peac01'
+	APP2='fo910peac02'
+	BAT1='fo910pebc01'
+	BAT2='fo910pebc02'
+	WEB1='fo910pewc01'
+	WEB2='fo910pewc02'
+	# Commands
+	dynconf6
+	eval $SVR6
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function fo910qa()
+{
+	# Variables
+	ENV='fo910qa'
+	APP1='fo910dvac05'
+	BAT1='fo910dvbc05'
+	WEB1='fo910dvwc05'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function fo910rpt()
+{
+	# Variables
+	ENV='fo910rpt'
+	APP1='fo910rpac01'
+	APP2='fo910rpac02'
+	BAT1='fo910rpbc01'
+	BAT2='fo910rpbc02'
+	WEB1='fo910rpwc01'
+	WEB2='fo910rpwc02'
+	# Commands
+	dynconf6
+	eval $SVR6
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function fo910spt()
+{
+	# Variables
+	ENV='fo910spt'
+	APP1='fo910dvac07'
+	BAT1='fo910dvbc07'
+	WEB1='fo910dvwc07'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function fo910sys()
+{
+	# Variables
+	ENV='fo910sys'
+	APP1='fo910dvac09'
+	BAT1='fo910dvbc09'
+	WEB1='fo910dvwc09'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function fo910trn()
+{
+	# Variables
+	ENV='fo910trn'
+	APP1='fo910trac01'
+	BAT1='fo910trbc01'
+	WEB1='fo910trwc01'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function fo910tst()
+{
+	# Variables
+	ENV='fo910tst'
+	APP1='fo910dvac10'
+	BAT1='fo910dvbc10'
+	WEB1='fo910dvwc10'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function fo910upg()
+{
+	# Variables
+	ENV='fo910upg'
+	APP1='fo910dvac04'
+	BAT1='fo910dvbc04'
+	WEB1='fo910dvwc04'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function fo920dmo()
+{
+	# Variables
+	ENV='fo920dmo'
+	APP1='fo920dmoaa1'
+	BAT1='fo920dmobb1'
+	WEB1='fo920dmoww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function fo920tst()
+{
+	# Variables
+	ENV='fo920tst'
+	APP1='fo920tstaa1'
+	BAT1='fo920tstbb1'
+	WEB1='fo920tstww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function fo920upg()
+{
+	# Variables
+	ENV='fo920upg'
+	APP1='fo920upgaa1'
+	BAT1='fo920upgbb1'
+	WEB1='fo920upgww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function hc910adm()
+{
+	# Variables
+	ENV='hc910adm'
+	APP1='hc910dvac02'
+	BAT1='hc910dvbc02'
+	WEB1='hc910dvwc02'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function hc910ba()
+{
+	# Variables
+	ENV='hc910ba'
+	APP1='hc910dvac05'
+	BAT1='hc910dvbc05'
+	WEB1='hc910dvwc05'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function hc910dmo()
+{
+	# Variables
+	ENV='hc910dmo'
+	APP1='hc910dvac01'
+	BAT1='hc910dvbc01'
+	WEB1='hc910dvwc01'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function hc910dv1()
+{
+	# Variables
+	ENV='hc910dv1'
+	APP1='hc910dvac03'
+	BAT1='hc910dvbc03'
+	WEB1='hc910dvwc03'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function hc910lt()
+{
+	# Variables
+	ENV='hc910lt'
+	APP1='hc910ltac01'
+	APP2='hc910ltac02'
+	APP3='hc910ltac03'
+	BAT1='hc910ltbc01'
+	BAT2='hc910ltbc02'
+	BAT3='hc910ltbc03'
+	WEB1='hc910ltwc01'
+	WEB2='hc910ltwc02'
+	WEB3='hc910ltwc03'
+	WEB4='hc910ltwc04'
+	WEB5='hc910ltwc05'
+	WEB6='hc910ltwc06'
+	# Commands
+	dynconf12
+	eval $SVR12
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function hc910prd()
+{
+	# Variables
+	ENV='hc910prd'
+	APP1='hc910prac01'
+	APP2='hc910prac02'
+	APP3='hc910prac03'
+	API1='hc910priac01'
+	API2='hc910priac02'
+	BAT1='hc910prbc01'
+	BAT2='hc910prbc02'
+	BAT3='hc910prbc03'
+	WEB1='hc910prwc01'
+	WEB2='hc910prwc02'
+	WEB3='hc910prwc03'
+	WEB4='hc910prwc04'
+	WEB5='hc910prwc05'
+	WEB6='hc910prwc06'
+	# Commands
+	prdchk &&
+	dynconf14
+	eval $SVR14
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function hc910pre()
+{
+	# Variables
+	ENV='hc910pre'
+	APP1='hc910peac01'
+	APP2='hc910peac02'
+	BAT1='hc910pebc01'
+	BAT2='hc910pebc02'
+	WEB1='hc910pewc01'
+	WEB2='hc910pewc02'
+	# Commands
+	dynconf6
+	eval $SVR6
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function hc910qa()
+{
+	# Variables
+	ENV='hc910qa'
+	APP1='hc910dvac07'
+	BAT1='hc910dvbc07'
+	WEB1='hc910dvwc07'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function hc910rpt()
+{
+	# Variables
+	ENV='hc910rpt'
+	APP1='hc910rpac01'
+	APP2='hc910rpac02'
+	BAT1='hc910rpbc01'
+	BAT2='hc910rpbc02'
+	WEB1='hc910rpwc01'
+	WEB2='hc910rpwc02'
+	# Commands
+	dynconf6
+	eval $SVR6
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function hc910spt()
+{
+	# Variables
+	ENV='hc910spt'
+	APP1='hc910dvac06'
+	BAT1='hc910dvbc06'
+	WEB1='hc910dvwc06'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function hc910sys()
+{
+	# Variables
+	ENV='hc910sys'
+	APP1='hc910dvac09'
+	BAT1='hc910dvbc09'
+	WEB1='hc910dvwc09'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function hc910trn()
+{
+	# Variables
+	ENV='hc910trn'
+	APP1='hc910trac01'
+	BAT1='hc910trbc01'
+	WEB1='hc910trwc01'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function hc910upg()
+{
+	# Variables
+	ENV='hc910upg'
+	APP1='hc910dvac04'
+	BAT1='hc910dvbc04'
+	WEB1='hc910dvwc04'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function hc920dmo()
+{
+	# Variables
+	ENV='hc920dmo'
+	APP1='hc920dmoaa1'
+	BAT1='hc920dmobb1'
+	WEB1='hc920dmoww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function hc920dv1()
+{
+	# Variables
+	ENV='hc920dv1'
+	APP1='hc920dv1aa1'
+	BAT1='hc920dv1bb1'
+	WEB1='hc920dv1ww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function hc920prd()
+{
+	# Variables
+	ENV='hc920prd'
+	APP1='hc920prdaa1'
+	APP2='hc920prdaa2'
+	APP3='hc920prdaa3'
+	API1='hc920prdai1'
+	API2='hc920prdai2'
+	BAT1='hc920prdbb1'
+	BAT2='hc920prdbb2'
+	WEB1='hc920prdww1'
+	WEB2='hc920prdww2'
+	WEB3='hc920prdww3'
+	# Commands
+	prdchk &&
+	dynconf10
+	eval $SVR10
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function hc920pre()
+{
+	# Variables
+	ENV='hc920pre'
+	APP1='hc920preaa1'
+	APP2='hc920preaa2'
+	BAT1='hc920prebb1'
+	BAT2='hc920prebb2'
+	WEB1='hc920preww1'
+	WEB2='hc920preww2'
+	# Commands
+	dynconf6
+	eval $SVR6
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function hc920sys()
+{
+	# Variables
+	ENV='hc920sys'
+	APP1='hc920sysaa1'
+	BAT1='hc920sysbb1'
+	WEB1='hc920sysww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function hc920qa()
+{
+	# Variables
+	ENV='hc920qa'
+	APP1='hc920qa-aa1'
+	BAT1='hc920qa-bb1'
+	WEB1='hc920qa-ww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function hc920rpt()
+{
+	# Variables
+	ENV='hc920rpt'
+	APP1='hc920rptaa1'
+	APP2='hc920rptaa2'
+	BAT1='hc920rptbb1'
+	BAT2='hc920rptbb2'
+	WEB1='hc920rptww1'
+	WEB2='hc920rptww2'
+	# Commands
+	dynconf6
+	eval $SVR6
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function hc920spt()
+{
+	# Variables
+	ENV='hc920spt'
+	APP1='hc920sptaa1'
+	BAT1='hc920sptbb1'
+	WEB1='hc920sptww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function hc920sys()
+{
+	# Variables
+	ENV='hc920sys'
+	APP1='hc920sysaa1'
+	BAT1='hc920sysbb1'
+	WEB1='hc920sysww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function hc920trn()
+{
+	# Variables
+	ENV='hc920trn'
+	APP1='hc920trnaa1'
+	BAT1='hc920trnbb1'
+	WEB1='hc920trnww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function hc920tst()
+{
+	# Variables
+	ENV='hc920tst'
+	APP1='hc920tstaa1'
+	BAT1='hc920tstbb1'
+	WEB1='hc920tstww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function hc920upg()
+{
+	# Variables
+	ENV='hc920upg'
+	APP1='hc920upgaa1'
+	BAT1='hc920upgbb1'
+	WEB1='hc920upgww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
