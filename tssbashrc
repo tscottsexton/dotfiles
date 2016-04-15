@@ -22,6 +22,7 @@ export HISTCONTROL=ignoreboth
 export JAVA_FONTS=/usr/share/fonts/TTF
 export EDITOR=/usr/bin/vim
 
+# Here are all of my aliases
 alias ls='ls --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
 alias admin='ssh tssexto2@tutelage.oit.ncsu.edu'
 alias fuck='eval $(thefuck $(fc -ln -1))'
