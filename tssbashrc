@@ -25,6 +25,7 @@ export EDITOR=/usr/bin/vim
 # Here are all of my aliases
 alias ls='ls --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
 alias admin='ssh tssexto2@tutelage.oit.ncsu.edu'
+alias cricket='ssh tssexto2@cricket.oit.ncsu.edu'
 alias fuck='eval $(thefuck $(fc -ln -1))'
 alias vi='vim'
 alias ...='cd ../..'
@@ -35,6 +36,10 @@ alias c='clear'
 alias sl=ls
 alias ll='ls -lah'
 alias grep='grep --color=tty -d skip'
+alias ga='git add'
+alias gc='git commit -m'
+alias gpush='git push origin master'
+alias gpull='git pull origin master'
 alias cp="cp -i"                          # confirm before overwriting something
 alias df='df -h'                          # human-readable sizes
 alias free='free -m'                      # show sizes in MB
