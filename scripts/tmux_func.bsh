@@ -14,20 +14,20 @@ FQDN='.acs.ncsu.edu'
 FQDN2='.oit.ncsu.edu'
 
 # Baseline tmux config file
-BCONF=/etc/basetmux.conf
+BCONF=$HOME/basetmux.conf
 
 ############################################################
 # COMMAND VARIABLES TO START TMUX DEPENDING ON ENVIRONMENT #
 ############################################################
 
 # Command for a 1 server Shibboleth environment
-SSVR1='tmux -f $HOME/${ENV}_tmux.conf -new -s $ENV "ssh $SHIB1$FQDN2" \; renamew -t $ENV:1 ALL'
+SSVR1='tmux -f $HOME/${ENV}_tmux.conf new -s $ENV "ssh $SHIB1$FQDN2" \; renamew -t $ENV:1 ALL'
 
 # Command for a 4 server Shibboleth environment
-SSVR4='tmux -f $HOME/${ENV}_tmux.conf -new -s $ENV "ssh $SHIB1$FQDN2" \; renamew -t $ENV:1 ALL \; splitw -t $ENV:1.1 -h "ssh $SHIB2$FQDN2" \; splitw -t $ENV:1.2 -h "ssh $SHIB3$FQDN2" \; splitw -t $ENV:1.3 -h "ssh $SHIB4$FQDN2" \; selectl tiled'
+SSVR4='tmux -f $HOME/${ENV}_tmux.conf new -s $ENV "ssh $SHIB1$FQDN2" \; renamew -t $ENV:1 ALL \; splitw -t $ENV:1.1 -h "ssh $SHIB2$FQDN2" \; splitw -t $ENV:1.2 -h "ssh $SHIB3$FQDN2" \; splitw -t $ENV:1.3 -h "ssh $SHIB4$FQDN2" \; selectl tiled \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
 
 # Command for a 6 server Shibboleth environment
-SSVR6='tmux -f $HOME/${ENV}_tmux.conf -new -s $ENV "ssh $SHIB1$FQDN2" \; renamew -t $ENV:1 ALL \; splitw -t $ENV:1.1 -h "ssh $SHIB2$FQDN2" \; splitw -t $ENV:1.2 -h "ssh $SHIB3$FQDN2" \; splitw -t $ENV:1.3 -h "ssh $SHIB4$FQDN2" \; splitw -t $ENV:1.4 -h "ssh $SHIB5$FQDN2" \; splitw -t $ENV:1.5 -h ssh "$SHIB6$FQDN2" \; selectl tiled'
+SSVR6='tmux -f $HOME/${ENV}_tmux.conf new -s $ENV "ssh $SHIB1$FQDN2" \; renamew -t $ENV:1 ALL \; splitw -t $ENV:1.1 -h "ssh $SHIB2$FQDN2" \; splitw -t $ENV:1.2 -h "ssh $SHIB3$FQDN2" \; splitw -t $ENV:1.3 -h "ssh $SHIB4$FQDN2" \; splitw -t $ENV:1.4 -h "ssh $SHIB5$FQDN2" \; splitw -t $ENV:1.5 -h ssh "$SHIB6$FQDN2" \; selectl tiled \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
 
 # Command for a 3 server environment (1 app, 1 bat and 1 web)
 SVR3='tmux -f $HOME/${ENV}_tmux.conf new -s $ENV "ssh $APP1$FQDN" \; renamew -t $ENV:1 ALL \; splitw -t $ENV:1.1 -h "ssh $BAT1$FQDN" \; splitw -t $ENV:1.2 -h "ssh $WEB1$FQDN" \; selectl even-vertical \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
@@ -1431,6 +1431,7 @@ function shibprd()
 	SHIB5='shib201sp'
 	SHIB6='shib220sp'
 	# Commands
+	prdchk &&
 	dynconfshib
 	eval $SSVR6
 	rm $HOME/${ENV}_tmux.conf
