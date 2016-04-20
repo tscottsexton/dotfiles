@@ -11,6 +11,7 @@
 
 # Fully Qual Domain Name
 FQDN='.acs.ncsu.edu'
+FQDN2='.oit.ncsu.edu'
 
 # Baseline tmux config file
 BCONF=/etc/basetmux.conf
@@ -18,6 +19,15 @@ BCONF=/etc/basetmux.conf
 ############################################################
 # COMMAND VARIABLES TO START TMUX DEPENDING ON ENVIRONMENT #
 ############################################################
+
+# Command for a 1 server Shibboleth environment
+SSVR1='tmux -f $HOME/${ENV}_tmux.conf -new -s $ENV "ssh $SHIB1$FQDN2" \; renamew -t $ENV:1 ALL'
+
+# Command for a 4 server Shibboleth environment
+SSVR4='tmux -f $HOME/${ENV}_tmux.conf -new -s $ENV "ssh $SHIB1$FQDN2" \; renamew -t $ENV:1 ALL \; splitw -t $ENV:1.1 -h "ssh $SHIB2$FQDN2" \; splitw -t $ENV:1.2 -h "ssh $SHIB3$FQDN2" \; splitw -t $ENV:1.3 -h "ssh $SHIB4$FQDN2" \; selectl tiled'
+
+# Command for a 6 server Shibboleth environment
+SSVR6='tmux -f $HOME/${ENV}_tmux.conf -new -s $ENV "ssh $SHIB1$FQDN2" \; renamew -t $ENV:1 ALL \; splitw -t $ENV:1.1 -h "ssh $SHIB2$FQDN2" \; splitw -t $ENV:1.2 -h "ssh $SHIB3$FQDN2" \; splitw -t $ENV:1.3 -h "ssh $SHIB4$FQDN2" \; splitw -t $ENV:1.4 -h "ssh $SHIB5$FQDN2" \; splitw -t $ENV:1.5 -h ssh "$SHIB6$FQDN2" \; selectl tiled'
 
 # Command for a 3 server environment (1 app, 1 bat and 1 web)
 SVR3='tmux -f $HOME/${ENV}_tmux.conf new -s $ENV "ssh $APP1$FQDN" \; renamew -t $ENV:1 ALL \; splitw -t $ENV:1.1 -h "ssh $BAT1$FQDN" \; splitw -t $ENV:1.2 -h "ssh $WEB1$FQDN" \; selectl even-vertical \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
@@ -260,6 +270,11 @@ function prdchk()
 
 
 # Functions to create the dynamic configs based on server environment
+
+function dynconfshib()
+{
+	cat $BCONF > $HOME/${ENV}_tmux.conf
+}
 
 function dynconf3()
 {
@@ -1355,5 +1370,68 @@ function hc920upg()
 	# Commands
 	dynconf3
 	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function shibdv()
+{
+	# Variables
+	ENV='shibdv'
+	SHIB1='shib11sp'
+	# Commands
+	dynconfshib
+	eval $SSVR1
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function shibisys()
+{
+	# Variables
+	ENV='shibsys'
+	SHIB1='shib10sp'
+	# Commands
+	dynconfshib
+	eval $SSVR1
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function shibitest()
+{
+	# Variables
+	ENV='shibtest'
+	SHIB1='shib11sp'
+	# Commands
+	dynconfshib
+	eval $SSVR1
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function shiblt()
+{
+	# Variables
+	ENV='shiblt'
+	SHIB1='shib110sp'
+	SHIB2='shib111sp'
+	SHIB3='shib210sp'
+	SHIB4='shib211sp'
+	# Commands
+	dynconfshib
+	eval $SSVR4
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function shibprd()
+{
+	# Variables
+	ENV='shibprd'
+	SHIB1='shib100sp'
+	SHIB2='shib101sp'
+	SHIB3='shib120sp'
+	SHIB4='shib200sp'
+	SHIB5='shib201sp'
+	SHIB6='shib220sp'
+	# Commands
+	dynconfshib
+	eval $SSVR6
 	rm $HOME/${ENV}_tmux.conf
 }
