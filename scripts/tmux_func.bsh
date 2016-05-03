@@ -1384,7 +1384,7 @@ function shibdv()
 	rm $HOME/${ENV}_tmux.conf
 }
 
-function shibisys()
+function shibsys()
 {
 	# Variables
 	ENV='shibsys'
@@ -1395,7 +1395,7 @@ function shibisys()
 	rm $HOME/${ENV}_tmux.conf
 }
 
-function shibitest()
+function shibtest()
 {
 	# Variables
 	ENV='shibtest'
