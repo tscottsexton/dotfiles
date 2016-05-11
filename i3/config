@@ -46,6 +46,7 @@ bindsym $mod+F3 exec pcmanfm
 bindsym $mod+Shift+F3 exec gksu pcmanfm
 bindsym $mod+F4 exec remmina
 bindsym $mod+F5 exec scudcloud
+bindsym $mod+F6 exec virtualbox
 bindsym $mod+F7 exec keepass
 bindsym $mod+t exec --no-startup-id pkill compton
 bindsym $mod+Ctrl+t exec --no-startup-id compton -b
@@ -120,7 +121,7 @@ set $ws2 2:werk
 set $ws3 3:tmux
 set $ws4 4:rdp
 set $ws5 5:chat
-# set $ws6 6
+set $ws6 6:windows
 set $ws7 7:keepass
 
 # switch to workspace
@@ -129,7 +130,7 @@ bindsym $mod+2 workspace $ws2
 bindsym $mod+3 workspace $ws3
 bindsym $mod+4 workspace $ws4
 bindsym $mod+5 workspace $ws5
-bindsym $mod+6 workspace 6
+bindsym $mod+6 workspace $ws6
 bindsym $mod+7 workspace $ws7
 bindsym $mod+8 workspace 8
 
