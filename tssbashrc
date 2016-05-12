@@ -35,6 +35,7 @@ alias q='exit'
 alias cls='clear'
 alias c='clear'
 alias sl=ls
+alias news='newsbeuter'
 alias ll='ls -lah'
 alias grep='grep --color=tty -d skip'
 alias ga='git add'
