@@ -370,19 +370,6 @@ function dynconf17B()
 
 # Functions to start Tmux Environments
 
-function cs900adm()
-{
-	# Variables
-	ENV='cs900adm'
-	APP1='cs900dvac02'
-	BAT1='cs900dvbc02'
-	WEB1='cs900dvwc02'
-	# Commands
-	dynconf3		# Call the proper dynamic config function
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
 function cs900dmo()
 {
 	# Variables
@@ -586,19 +573,6 @@ function cs900upg()
 	rm $HOME/${ENV}_tmux.conf
 }
 
-function ep910adm()
-{
-	# Variables
-	ENV='ep910adm'
-	APP1='ep910dvac03'
-	BAT1='ep910dvbc03'
-	WEB1='ep910dvwc03'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
 function ep910dmo()
 {
 	# Variables
@@ -770,19 +744,6 @@ function ep910upg()
 	WEB1='ep910dvwc04'
 	# Commands
 	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function fo910adm()
-{
-	# Variables
-	ENV='fo910adm'
-	APP1='fo910dvac02'
-	BAT1='fo910dvbc02'
-	WEB1='fo910dvwc02'
-	# Commands
-	dynconf3	
 	eval $SVR3
 	rm $HOME/${ENV}_tmux.conf
 }
@@ -1007,45 +968,6 @@ function fo920upg()
 	rm $HOME/${ENV}_tmux.conf
 }
 
-function hc910adm()
-{
-	# Variables
-	ENV='hc910adm'
-	APP1='hc910dvac02'
-	BAT1='hc910dvbc02'
-	WEB1='hc910dvwc02'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function hc910ba()
-{
-	# Variables
-	ENV='hc910ba'
-	APP1='hc910dvac05'
-	BAT1='hc910dvbc05'
-	WEB1='hc910dvwc05'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function hc910dmo()
-{
-	# Variables
-	ENV='hc910dmo'
-	APP1='hc910dvac01'
-	BAT1='hc910dvbc01'
-	WEB1='hc910dvwc01'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
 function hc910dv1()
 {
 	# Variables
@@ -1122,19 +1044,6 @@ function hc910pre()
 	rm $HOME/${ENV}_tmux.conf
 }
 
-function hc910qa()
-{
-	# Variables
-	ENV='hc910qa'
-	APP1='hc910dvac07'
-	BAT1='hc910dvbc07'
-	WEB1='hc910dvwc07'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
 function hc910rpt()
 {
 	# Variables
@@ -1151,32 +1060,6 @@ function hc910rpt()
 	rm $HOME/${ENV}_tmux.conf
 }
 
-function hc910spt()
-{
-	# Variables
-	ENV='hc910spt'
-	APP1='hc910dvac06'
-	BAT1='hc910dvbc06'
-	WEB1='hc910dvwc06'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function hc910sys()
-{
-	# Variables
-	ENV='hc910sys'
-	APP1='hc910dvac09'
-	BAT1='hc910dvbc09'
-	WEB1='hc910dvwc09'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
 function hc910trn()
 {
 	# Variables
@@ -1184,19 +1067,6 @@ function hc910trn()
 	APP1='hc910trac01'
 	BAT1='hc910trbc01'
 	WEB1='hc910trwc01'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function hc910upg()
-{
-	# Variables
-	ENV='hc910upg'
-	APP1='hc910dvac04'
-	BAT1='hc910dvbc04'
-	WEB1='hc910dvwc04'
 	# Commands
 	dynconf3
 	eval $SVR3
