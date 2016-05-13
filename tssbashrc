@@ -35,6 +35,7 @@ alias q='exit'
 alias cls='clear'
 alias c='clear'
 alias sl=ls
+alias news='newsbeuter'
 alias ll='ls -lah'
 alias grep='grep --color=tty -d skip'
 alias ga='git add'
@@ -53,6 +54,8 @@ alias mirrors='sudo pacman-mirrors -g'
 alias printer='system-config-printer'
 alias trilug='weechat'
 alias cofr='weechat -d ~/.weechat/weechat2'
+alias proj='xrandr --output VGA1 --auto'
+alias projoff='xrandr --ouput VGA1 --off'
 
 # ex - archive extractor
 # usage: ex <file>
