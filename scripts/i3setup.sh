@@ -48,13 +48,15 @@ install()
 		echo "vboxshare        /vboxshare        vboxsf    defaults 0 0" >> /etc/fstab
 	fi
 
+	# Change keyserver
+	sed -i "/keyserver hkp://pool.sks-keyservers.net/keyserver hkp://keyserver.kjsl.com:80" /etc/pacman.d/gnupg/gpg.conf
+
 	# Update all software
 	echo 'Updating system before installing software...'
 	pacman-mirrors -g 
+	pacman -S archlinux-keyring --noconfirm
 	pacman -Syyuu --noconfirm
 
-	# Run pacdiff to update files
-	pacdiff
 
 	echo 'Installing software...'
 	pacman -S --noconfirm chromium dnsutils dropbox freerdp keepass vim openssh remmina tmux weechat lynx newsbeuter
@@ -66,6 +68,9 @@ install()
 
 	rm -rf /home/$SUDO_USER/.moonchild\ productions/
 	rm -rf /home/$SUDO_USER/.config/hexchat/
+
+	# Run pacdiff to update files
+	pacdiff
 }
 
 configure()
