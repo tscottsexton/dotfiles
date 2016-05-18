@@ -1,78 +1,180 @@
 #!/bin/bash
 
-rootcheck()
-{
-	# Check if script is running as root
-	if [[ $UID != "0" ]]; then
-		echo "Sorry, must sudo or be root to run this script."
-		exit
-	fi
-}
+# Check if script is running as root
+if [[ $UID != "0" ]]; then
+	echo "Sorry, must sudo or be root to run this script."
+	exit
+fi
 
+# Need dmidecode before being able to set variables
 dmicheck()
 {
-	# Need dmidecode before being able to set variables
-	ISTHERE=$(pacman -Q dmidecode | cut -d' ' -f1)
-	if [[ $ISTHERE != "dmidecode" ]]; then
-		echo "This script requires dmidecode...  Installing..."
-		pacman -S --noconfirm dmidecode
-	else 
-		echo "Found package dmidecode...  We can proceed."
-	fi
+ISTHERE=$(pacman -Q dmidecode | cut -d' ' -f1)
+if [[ $ISTHERE != "dmidecode" ]]; then
+	echo "This script requires dmidecode...  Installing..."
+	pacman -S --noconfirm dmidecode
+else 
+	echo "Found package dmidecode...  We can proceed."
+fi
 }
 
-install()
-{
-	rootcheck
-	dmicheck
+dmicheck
 
-	# Variables
-	DTREM='blueman bluez-libs bluez crda wireless-regdb'
-	LTREM='dmraid dnsmasq flashplugin hexchat manjaro-welcome mousepad palemoon-bin pamac subversion xf86-input-elographics xf86-input-joystick'
-	LAPTOP=$(dmidecode --string chassis-type)
-	VBOX=$(grep 'Vendor: VBOX' /proc/scsi/scsi | cut -d' ' -f4)
-	HPART=$(df | grep home | cut -d'/' -f4)
-	BAT=$(ls /sys/class/power_supply | grep BAT | cut -d'T' -f2)
+# Variables
+DTREM='blueman bluez-libs bluez crda wireless-regdb'
+LTREM='dmraid dnsmasq flashplugin hexchat manjaro-welcome mousepad palemoon-bin pamac subversion xf86-input-elographics xf86-input-joystick'
+LAPTOP=$(dmidecode --string chassis-type)
+VBOX=$(grep 'Vendor: VBOX' /proc/scsi/scsi | cut -d' ' -f4)
+HPART=$(df | grep home | cut -d'/' -f4)
+BAT=$(ls /sys/class/power_supply | grep BAT | cut -d'T' -f2)
 
-	#Check if script is running on a laptop, if not, remove certain pacakges, if so, remove different packages
-	if [[ $LAPTOP != "Laptop" ]]; then
-		pacman -Rs --noconfirm $DTREM
-	fi
+
+# Prep for setup
+echo "Backing up files..."
+mkdir /home/$SUDO_USER/temp
+cp /home/$SUDO_USER/.bashrc /home/$SUDO_USER/temp/.bashrc.orig
+cp /home/$SUDO_USER/.i3/config /home/$SUDO_USER/temp/.i3.config.orig
+cp /usr/bin/start_conky_grey /home/$SUDO_USER/temp/start_conky_grey.orig
+cp /etc/i3status.conf /home/$SUDO_USER/temp/i3status.conf.orig
+cp /usr/share/conky/conky_grey /home/$SUDO_USER/temp/conky_grey.orig
+cp /etc/pam.d/passwd /home/$SUDO_USER/temp/pam.d.passwd.orig
+cp /etc/pam.d/system-login /home/$SUDO_USER/temp/pam.d.system-login.orig
+cp /etc/profile /home/$SUDO_USER/temp/etc.profile.orig
+cp /etc/sudoers /home/$SUDO_USER/temp/sudoers.orig
+cp /etc/bash.bashrc /home/$SUDO_USER/temp/bash.bashrc.orig
+cp /etc/ssh/sshd_config /home/$SUDO_USER/temp/sshd_config.orig
+
+if [[ $LAPTOP != "Laptop" ]]; then
+	pacman -Rs --noconfirm $DTREM
+fi
 	pacman -Rs --noconfirm $LTREM
 
-	# Check if running on virtual box.  If so, mount shared folder
-	if [[ $VBOX == "VBOX" ]]; then
-		echo 'Mounting Virutal Box shared folder...'
-		mkdir /vboxshare
-		mount -t vboxsf vboxshare /vboxshare
-		echo "vboxshare        /vboxshare        vboxsf    defaults 0 0" >> /etc/fstab
-	fi
+if [[ $VBOX == "VBOX" ]]; then
+	echo 'Mounting Virutal Box shared folder...'
+	mkdir /vboxshare
+	mount -t vboxsf vboxshare /vboxshare
+	echo "vboxshare        /vboxshare        vboxsf    defaults 0 0" >> /etc/fstab
+fi
 
-	# Update all software
-	echo 'Updating system before installing software...'
-	pacman-mirrors -g 
-	pacman -Syyuu --noconfirm
+echo 'Updating system before installing software...'
+pacman-mirrors -g 
+pacman -Syu --noconfirm
+sudo -u $SUDO_USER yaourt -Syua --noconfirm
 
-	# Run pacdiff to update files
-	pacdiff
+# Install new kernel
+echo 'Installing 4.3 kernel...'
+mhwd-kernel -i linux43 rmc
 
-	echo 'Installing software...'
-	pacman -S --noconfirm chromium dnsutils dropbox freerdp keepass vim openssh remmina tmux weechat lynx newsbeuter
-	sudo -u $SUDO_USER yaourt -S --noconfirm keepass-plugin-http scudcloud
+echo 'Installing software...'
+pacman -S --noconfirm chromium clamav dnsutils dropbox freerdp keepass vim openssh redshift remmina thefuck tmux weechat
+sudo -u $SUDO_USER yaourt -S --noconfirm keepass-plugin-http 
 
-	if [[ $VBOX != "VBOX" ]]; then
-		pacman -S --noconfirm virtualbox clamav
-	fi
-}
+if [[ $VBOX != "VBOX" ]]; then
+	pacman -S --noconfirm virtualbox
+fi
 
-configure()
-{
-	# Assume git clone has already been done.
-	echo 'Setting up user environment'
-	rm /home/$SUDO_USER/.bashrc
-	rm /home/$SUDO_USER/.tmux.conf
-	rm -r /home/$SUDO_USER/.remmina
-	rm -r /home/$SUDO_USER/.i3
+
+# Files needing updated
+
+# ~/bashrc
+# ~/.i3/config
+# /usr/bin/start_conky_grey
+# /etc/i3status.conf
+# /usr/share/conky/conky_grey
+# /etc/default/grub
+
+# Check for .pacnew files and put them in place
+
+if [[ -a /etc/pacman.conf.pacnew ]]; then
+	cp /etc/pacman.conf /etc/pacman.conf.old
+	/usr/bin/cp /etc/pacman.conf.pacnew /etc/pacman.conf
+	rm /etc/pacman.conf.pacnew
+fi
+
+if [[ -a /usr/bin/start_conky_grey.pacnew ]]; then
+	cp /usr/bin/start_conky_grey /usr/bin/start_conky_grey.old
+	/usr/bin/cp /usr/bin/start_conky_grey.pacnew /usr/bin/start_conky_grey
+	rm /usr/bin/start_conky_grey.pacnew
+fi
+
+if [[ -a /usr/share/conky/conky_grey.pacnew ]]; then
+	cp /usr/share/conky/conky_grey /usr/share/conky/conky_grey.old
+	/usr/bin/cp /usr/share/conky/conky_grey.pacnew /usr/share/conky/conky_grey
+	rm /usr/share/conky/conky_grey.pacnew
+fi
+
+if [[ -a /etc/lightdm/lightdm.conf.pacnew ]]; then
+	cp /etc/lightdm/lightdm.conf /etc/lightdm/lightdm.conf.old
+	/usr/bin/cp /etc/lightdm/lightdm.conf.pacnew /etc/lightdm/lightdm.conf
+	rm /etc/lightdm/lightdm.conf.pacnew
+fi
+
+if [[ -a /etc/profile.pacnew ]]; then
+	cp /etc/profile /etc/profile.old
+	/usr/bin/cp /etc/profile.pacnew /etc/profile
+	rm /etc/profile.pacnew
+fi 
+
+# Setting up local environment
+# Setting up .bashrc
+echo 'Setting up your .bashrc...'
+sed -i '/alias ll/d' /home/$SUDO_USER/.bashrc
+sed -i '/alias update/d' /home/$SUDO_USER/.bashrc
+sed -i '/alias la/d' /home/$SUDO_USER/.bashrc
+sed -i '/PS1/d' /home/$SUDO_USER/.bashrc
+sed -i 's/vi/vim/g' /home/$SUDO_USER/.bashrc
+sed -i 's/nano/vim/g' /home/$SUDO_USER/.bashrc
+#sed -i -e '/alias '{i\# Aliases' -e ':a:$q;n;ba;}' /home/$SUDO_USER/.bashrc
+sed -i "/alias ls/a alias ll='ls -lah'" /home/$SUDO_USER/.bashrc
+sed -i "/alias ls/a alias sl=ls" /home/$SUDO_USER/.bashrc
+sed -i "/alias ls/a alias c='clear'" /home/$SUDO_USER/.bashrc
+sed -i "/alias ls/a alias cls='clear'" /home/$SUDO_USER/.bashrc
+sed -i "/alias ls/a alias q='exit'" /home/$SUDO_USER/.bashrc
+sed -i "/alias ls/a alias ..='cd ..'" /home/$SUDO_USER/.bashrc
+sed -i "/alias ls/a alias ...='cd ../..'" /home/$SUDO_USER/.bashrc
+sed -i "/alias ls/a alias vi='vim'" /home/$SUDO_USER/.bashrc
+sed -i "/alias ls/a alias fuck='eval \$(thefuck \$(fc -ln -1))'" /home/$SUDO_USER/.bashrc
+sed -i "/alias ls/a alias admin='ssh tssexto2@tutelage.oit.ncsu.edu'" /home/$SUDO_USER/.bashrc
+sed -i "/alias ls/a alias trilug='weechat'" /home/$SUDO_USER/.bashrc
+sed -i "/alias ls/a alias cofr='weechat -d ~/.weechat/weechat2'" /home/$SUDO_USER/.bashrc
+echo 'source ~/scripts/tss_functions.bash' >> /home/$SUDO_USER/.bashrc
+echo "PS1='\\u:[\$(pwd)/]\\$ '" >> /home/$SUDO_USER/.bashrc
+
+# Setting up the i3 config
+echo 'Configuring i3...'
+sed -i 's/bindsym $mod+Shift+q kill/bindsym $mod+c kill/' /home/$SUDO_USER/.i3/config
+sed -i 's/bindsym $mod+Ctrl+b/a bindsym $mod+F1 exec chromium/' /home/$SUDO_USER/.i3/config
+sed -i 's/bindsym $mod+F2 exec palemoon/#bindsym $mod+F2 exec palemoon/' /home/$SUDO_USER/.i3/config
+sed -i 's/bindsym $mod+F3/a bindsym $mod+F4 exec remmina/' /home/$SUDO_USER/.i3/config
+sed -i '/bindsym $mod+F4/a bindsym $mod+F7 exec keepass' /home/$SUDO_USER/.i3/config
+sed -i 's/# set $ws1 1:/set $ws1 1:www/' /home/$SUDO_USER/.i3/config
+sed -i 's/# set $ws2 2:/set $ws2 2:werk/' /home/$SUDO_USER/.i3/config
+sed -i 's/# set $ws3 3:/set $ws3 3:tmux/' /home/$SUDO_USER/.i3/config
+sed -i 's/# set $ws3 4:/set $ws4 4:rdp/' /home/$SUDO_USER/.i3/config
+sed -i '/set $ws4 4:/a set $ws5 5:irc' /home/$SUDO_USER/.i3/config
+
+if [[ VBOX != "VBOX" ]]; then
+	sed -i '/set $ws5 5:/a set $ws6 6:vbox' /home/$SUDO_USER/.i3/config
+else 
+	sed -i '/set $ws5 5:/a # set $ws6 6' /home/$SUDO_USER/.i3/config
+fi
+	sed -i '/set $ws6 6/a set $ws7 7:keepass' /home/$SUDO_USER/.i3/config
+
+sed -i 's/$mod+1 workspace 1/$mod+1 workspace $ws1/' /home/$SUDO_USER/.i3/config
+sed -i 's/$mod+2 workspace 2/$mod+2 workspace $ws2/' /home/$SUDO_USER/.i3/config
+sed -i 's/$mod+3 workspace 3/$mod+3 workspace $ws3/' /home/$SUDO_USER/.i3/config
+sed -i 's/$mod+4 workspace 4/$mod+4 workspace $ws4/' /home/$SUDO_USER/.i3/config
+sed -i 's/$mod+5 workspace 5/$mod+5 workspace $ws5/' /home/$SUDO_USER/.i3/config
+
+if [[ LAPTOP == 'Laptop' ]]; then
+	sed -i 's/$mod+6 workspace 6/$mod+6 workspace $ws6/' /home/$SUDO_USER/.i3/config
+fi
+
+sed -i 's/$mod+7 workspace 7/$mod+7 workspace $ws7/' /home/$SUDO_USER/.i3/config
+sed -i "/pamac-tray/d" /home/$SUDO_USER/.i3/config
+sed -i 's/-time 10/-time 20/' /home/$SUDO_USER/.i3/config
+sed -i "/polkit-gnome/a exec --no-startup-id rwallpaper" /home/$SUDO_USER/.i3/config
+sed -i "/-locker blurlock/a exec --no-startup-id dropbox" /home/$SUDO_USER/.i3/config
 
 # Confiuring Conky
 echo 'Configuring conky...'
