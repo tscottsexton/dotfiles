@@ -49,7 +49,7 @@ install()
 	fi
 
 	# Change keyserver
-	sed -i "/keyserver hkp://pool.sks-keyservers.net/keyserver hkp://keyserver.kjsl.com:80" /etc/pacman.d/gnupg/gpg.conf
+	sed -i "s/keyserver hkp:\/\/pool.sks-keyservers.net/keyserver hkp:\/\/keyserver.kjsl.com:80/" /etc/pacman.d/gnupg/gpg.conf
 
 	# Update all software
 	echo 'Updating system before installing software...'
