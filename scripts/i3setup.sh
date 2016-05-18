@@ -59,7 +59,7 @@ install()
 
 
 	echo 'Installing software...'
-	pacman -S --noconfirm chromium dnsutils dropbox freerdp keepass vim openssh remmina tmux weechat lynx newsbeuter
+	pacman -S --noconfirm chromium dnsutils dropbox freerdp keepass vim openssh remmina nmap tmux weechat lynx newsbeuter
 	sudo -u $SUDO_USER yaourt -S --noconfirm keepass-plugin-http scudcloud
 
 	if [[ $VBOX != "VBOX" ]]; then
@@ -71,6 +71,9 @@ install()
 
 	# Run pacdiff to update files
 	pacdiff
+
+	if [[ $VBOX == "VBOX" ]]; then
+		rm /etc/X11/xorg.conf.d/90-mhwd.conf
 }
 
 configure()
@@ -87,6 +90,7 @@ configure()
 	ln -s /home/$SUDO_USER/dotfiles/remmina /home/$SUDO_USER/.remmina
 	ln -s /home/$SUDO_USER/dotfiles/i3 /home/$SUDO_USER/.i3
 	ln -s /home/$SUDO_USER/dotfiles/newsbeuter/urls /home/$SUDO_USER/.newsbeuter/urls
+	ln -s /home/$SUDO_USER/dotfiles/scripts /home/$SUDO_USER/scripts
 
 	# Confiuring Conky
 	echo 'Configuring conky...'
