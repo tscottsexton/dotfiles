@@ -270,4 +270,19 @@ security()
 	fi
 }
 
+both()
+{
+	rootcheck
+	install
+	configure
+}
+
+everything()
+{
+	rootcheck
+	install
+	configure
+	security
+}
+
 "$@"
