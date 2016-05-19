@@ -124,9 +124,11 @@ configure()
 	echo 'Configuring random crap...'
 	sed -i "/# Misc options/a ILoveCandy" /etc/pacman.conf
 	sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=2/' /etc/default/grub
+	git config --global user.email "me@scottsexton.net"
+	git config --global user.name "Scott Sexton"
 
 	# Copy files from Dropbox
-	echo '**** WARNING! **** If you haven't logged into dropbox yet, do so before continuing!!'
+	echo "**** WARNING! **** If you haven't logged into dropbox yet, do so before continuing!!"
 	echo 'Press any key to continue...'
 	read ANSWER
 
