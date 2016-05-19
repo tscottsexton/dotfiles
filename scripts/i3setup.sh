@@ -91,6 +91,7 @@ configure()
 	ln -s /home/$SUDO_USER/dotfiles/i3 /home/$SUDO_USER/.i3
 	ln -s /home/$SUDO_USER/dotfiles/newsbeuter/urls /home/$SUDO_USER/.newsbeuter/urls
 	ln -s /home/$SUDO_USER/dotfiles/scripts /home/$SUDO_USER/scripts
+	ln -s /home/$SUDO_USER/dotfiles/basetmux.conf /home/$SUDO_USER/basetmux.conf
 
 	# Confiuring Conky
 	echo 'Configuring conky...'
