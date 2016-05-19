@@ -268,8 +268,7 @@ bar {
 
 # Autostart applications
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-#exec --no-startup-id rwallpaper
-exec --no-startup-id /home/tssexto2/backgrounds/liveearth/himawaripy.py
+exec --no-startup-id rwallpaper
 exec --no-startup-id nitrogen --restore
 exec --no-startup-id nm-applet
 exec --no-startup-id volumeicon

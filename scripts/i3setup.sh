@@ -79,6 +79,10 @@ install()
 
 configure()
 {
+	LAPTOP=$(dmidecode --string chassis-type)
+	HPART=$(df | grep home | cut -d'/' -f4)
+	VBOX=$(grep 'Vendor: VBOX' /proc/scsi/scsi | cut -d' ' -f4)
+	BAT=$(ls /sys/class/power_supply | grep BAT | cut -d'T' -f2)
 	rootcheck
 	# Assume git clone has already been done.
 	echo 'Setting up user environment'
@@ -121,34 +125,31 @@ configure()
 	sed -i "/# Misc options/a ILoveCandy" /etc/pacman.conf
 	sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=2/' /etc/default/grub
 
+	# Copy files from Dropbox
+	echo '**** WARNING! **** If you haven't logged into dropbox yet, do so before continuing!!'
+	echo 'Press any key to continue...'
+	read ANSWER
+
+	cp -r /home/$SUDO_USER/Dropbox/i3files/weechat/* /home/$SUDO_USER/.weechat
+	cp -r /home/$SUDO_USER/Dropbox/i3files/backgrounds /home/$SUDO_USER/
+	cp /home/$SUDO_USER/Dropbox/rwallpaper /usr/bin/
+
+	if [[ $LAPTOP == 'Laptop' ]]; then
+		rm /home/$SUDO_USER/backgrounds/1920x1200*
+	fi
+
+	if [[ $VBOX == 'VBOX' ]]; then
+		rm /home/$SUDO_USER/backgrounds/1600x900*
+	fi 
+
 	# Fix ownership
 	chown $SUDO_USER:users /home/$SUDO_USER -R
+
 }
-
-#echo 'Enter location of tar file, if any: '
-#read TARLOC
-
-#if [[ $TARLOC != '' ]]; then
-#	cp $TARLOC /home/$SUDO_USER
-#	tar xvf *.tar
-#	cp /home/$SUDO_USER/usr/bin/rwallpaper /usr/bin
-#	cp /home/$SUDO_USER/etc/basetmux.conf /etc
-#	cp /home/$SUDO_USER/usr/local/bin/update /usr/local/bin
-#	rm -rf /home/$SUDO_USER/etc
-#	rm -rf /home/$SUDO_USER/usr
-#fi
-
-#if [[ $LAPTOP == 'Laptop' ]]; then
-#	rm /home/$SUDO_USER/backgrounds/1920x1200*
-#fi
-#
-#if [[ $VBOX == 'VBOX' ]]; then
-#	rm /home/$SUDO_USER/backgrounds/1600x900*
-#fi 
-
 
 security()
 {
+	VBOX=$(grep 'Vendor: VBOX' /proc/scsi/scsi | cut -d' ' -f4)
 	rootcheck
 	# Security Section
 	echo "Setting up security..."
