@@ -132,9 +132,10 @@ configure()
 	echo 'Press any key to continue...'
 	read ANSWER
 
+	mkdir /home/$SUDO_USER/.weechat
 	cp -r /home/$SUDO_USER/Dropbox/i3files/weechat/* /home/$SUDO_USER/.weechat
 	cp -r /home/$SUDO_USER/Dropbox/i3files/backgrounds /home/$SUDO_USER/
-	cp /home/$SUDO_USER/Dropbox/rwallpaper /usr/bin/
+	cp /home/$SUDO_USER/Dropbox/i3files/rwallpaper /usr/bin/
 
 	if [[ $LAPTOP == 'Laptop' ]]; then
 		rm /home/$SUDO_USER/backgrounds/1920x1200*
