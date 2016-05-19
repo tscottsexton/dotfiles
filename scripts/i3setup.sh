@@ -144,7 +144,6 @@ configure()
 
 	# Fix ownership
 	chown $SUDO_USER:users /home/$SUDO_USER -R
-
 }
 
 security()
