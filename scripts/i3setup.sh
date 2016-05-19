@@ -74,6 +74,7 @@ install()
 
 	if [[ $VBOX == "VBOX" ]]; then
 		rm /etc/X11/xorg.conf.d/90-mhwd.conf
+	fi
 }
 
 configure()
