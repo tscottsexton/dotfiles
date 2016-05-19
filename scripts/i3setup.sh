@@ -94,8 +94,6 @@ configure()
 
 	# Confiuring Conky
 	echo 'Configuring conky...'
-	# Getting rid of the shortcuts conky
-	sed -i "/conky1/d" /usr/bin/start_conky_grey
 	sed -i "/time %A/d" /usr/share/conky/conky_grey
 	sed -i "/time %e/d" /usr/share/conky/conky_grey
 	sed -i "/time %b/d" /usr/share/conky/conky_grey
