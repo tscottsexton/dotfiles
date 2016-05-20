@@ -80,7 +80,7 @@ install()
 configure()
 {
 	LAPTOP=$(dmidecode --string chassis-type)
-	HPART=$(df | grep home | cut -d'/' -f4)
+	HPART=$(df --output=target | grep home)
 	VBOX=$(grep 'Vendor: VBOX' /proc/scsi/scsi | cut -d' ' -f4)
 	BAT=$(ls /sys/class/power_supply | grep BAT | cut -d'T' -f2)
 	rootcheck
@@ -108,11 +108,11 @@ configure()
 
 	# Config for i3status
 	echo 'Configuring i3 status bar...'
-	if [[ $HPART == "home" ]]; then
+	if [[ $HPART == "/home" ]]; then
 		sed -i 's/# order += "disk \/home"/order += "disk \/home"/' /etc/i3status.conf
 	fi 
 
-	if [[ $BAT == "0" ]]; then
+	if [[ $BAT == "0@" ]]; then
 		sed -i "/battery 1 {/battery 0 {" /etc/i3status.conf
 	fi
 	if [[ $LAPTOP != "Laptop" ]]; then
