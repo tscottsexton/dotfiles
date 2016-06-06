@@ -28,7 +28,7 @@ install()
 
 	# Variables
 	DTREM='blueman bluez-libs bluez crda wireless-regdb'
-	LTREM='dmraid dnsmasq flashplugin hexchat manjaro-welcome mousepad palemoon-bin pamac subversion xf86-input-elographics xf86-input-joystick'
+	LTREM='dmraid dnsmasq flashplugin hexchat manjaro-welcome mousepad palemoon-bin pamac subversion xf86-input-elographics xf86-input-joystick moc'
 	LAPTOP=$(dmidecode --string chassis-type)
 	VBOX=$(grep 'Vendor: VBOX' /proc/scsi/scsi | cut -d' ' -f4)
 	HPART=$(df | grep home | cut -d'/' -f4)
