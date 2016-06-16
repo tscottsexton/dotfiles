@@ -89,11 +89,11 @@ configure()
 	rm /home/$SUDO_USER/.bashrc
 	rm /home/$SUDO_USER/.tmux.conf
 	rm -r /home/$SUDO_USER/.remmina
-	rm -r /home/$SUDO_USER/.i3
+#	rm -r /home/$SUDO_USER/.i3
 	ln -s /home/$SUDO_USER/dotfiles/tssbashrc /home/$SUDO_USER/.bashrc
 	ln -s /home/$SUDO_USER/dotfiles/tmux.conf /home/$SUDO_USER/.tmux.conf
 	ln -s /home/$SUDO_USER/dotfiles/remmina /home/$SUDO_USER/.remmina
-	ln -s /home/$SUDO_USER/dotfiles/i3 /home/$SUDO_USER/.i3
+#	ln -s /home/$SUDO_USER/dotfiles/i3 /home/$SUDO_USER/.i3
 	mkdir -p /home/$SUDO_USER/.newsbeuter
 	ln -s /home/$SUDO_USER/dotfiles/newsbeuter/urls /home/$SUDO_USER/.newsbeuter/urls
 	ln -s /home/$SUDO_USER/dotfiles/scripts /home/$SUDO_USER/scripts
