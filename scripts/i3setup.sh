@@ -28,7 +28,7 @@ install()
 
 	# Variables
 	DTREM='blueman bluez-libs bluez crda wireless-regdb'
-	LTREM='dmraid dnsmasq flashplugin hexchat manjaro-welcome mousepad palemoon-bin pamac subversion xf86-input-elographics xf86-input-joystick'
+	LTREM='dmraid dnsmasq flashplugin hexchat manjaro-welcome mousepad palemoon-bin pamac subversion xf86-input-elographics xf86-input-joystick moc'
 	LAPTOP=$(dmidecode --string chassis-type)
 	VBOX=$(grep 'Vendor: VBOX' /proc/scsi/scsi | cut -d' ' -f4)
 	HPART=$(df | grep home | cut -d'/' -f4)
@@ -113,7 +113,8 @@ configure()
 	fi 
 
 	if [[ $BAT == "0@" ]]; then
-		sed -i "/battery 1 {/battery 0 {" /etc/i3status.conf
+		sed -i 's/# order += "battery 1/# order += "battery 0/' /etc/i3status.conf
+		sed -i 's/battery 1 {/battery 0 {/' /etc/i3status.conf
 	fi
 	if [[ $LAPTOP != "Laptop" ]]; then
 		sed -i 's/order += "battery/# order += "battery/' /etc/i3status.conf
