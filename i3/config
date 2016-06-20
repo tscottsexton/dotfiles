@@ -140,7 +140,7 @@ bindsym $mod+minus scratchpad show
 set $ws1 1:www
 set $ws2 2:werk
 set $ws3 3:tmux
-set $ws3 4:rdp
+set $ws4 4:rdp
 set $ws5 5:chat
 set $ws6 6:windows
 set $ws7 7:keepass
