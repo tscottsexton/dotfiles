@@ -59,7 +59,7 @@ install()
 
 
 	echo 'Installing software...'
-	pacman -S --noconfirm chromium dnsutils dropbox freerdp keepass vim openssh remmina nmap tmux weechat lynx newsbeuter
+	pacman -S --noconfirm chromium dnsutils dropbox freerdp keepass vim openssh remmina nmap tmux weechat lynx newsbeuter libu2f-host
 	sudo -u $SUDO_USER yaourt -S --noconfirm keepass-plugin-http scudcloud
 
 	if [[ $VBOX != "VBOX" ]]; then
