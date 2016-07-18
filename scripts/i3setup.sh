@@ -28,7 +28,7 @@ install()
 
 	# Variables
 	DTREM='blueman bluez-libs bluez crda wireless-regdb'
-	LTREM='dmraid dnsmasq flashplugin hexchat manjaro-welcome mousepad palemoon-bin pamac subversion xf86-input-elographics xf86-input-joystick moc'
+	LTREM='dmraid dnsmasq flashplugin hexchat manjaro-welcome mousepad palemoon-bin pamac xf86-input-elographics xf86-input-joystick moc'
 	LAPTOP=$(dmidecode --string chassis-type)
 	VBOX=$(grep 'Vendor: VBOX' /proc/scsi/scsi | cut -d' ' -f4)
 	HPART=$(df | grep home | cut -d'/' -f4)
@@ -59,7 +59,7 @@ install()
 
 
 	echo 'Installing software...'
-	pacman -S --noconfirm chromium dnsutils dropbox freerdp keepass vim openssh remmina nmap tmux weechat lynx newsbeuter
+	pacman -S --noconfirm chromium dnsutils dropbox freerdp keepass vim openssh remmina nmap tmux weechat lynx newsbeuter libu2f-host
 	sudo -u $SUDO_USER yaourt -S --noconfirm keepass-plugin-http scudcloud
 
 	if [[ $VBOX != "VBOX" ]]; then
