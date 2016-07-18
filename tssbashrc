@@ -85,4 +85,4 @@ ex ()
 # prompt
 BROWSER=/usr/bin/xdg-open
 source ~/dotfiles/scripts/tmux_func.bsh
-PS1='\u:[$(pwd)/]\$ '
+PS1='\u@\h:[$(pwd)/]\$ '
