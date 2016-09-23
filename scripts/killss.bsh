@@ -1,0 +1,3 @@
+#!/bin/bash
+proc=$(ps aux | grep [x]autolock | cut -d ' ' -f4)
+kill -9 $proc
