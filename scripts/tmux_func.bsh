@@ -942,6 +942,19 @@ function fo920dmo()
 	rm $HOME/${ENV}_tmux.conf
 }
 
+function fo920sys()
+{
+	# Variables
+	ENV='fo920sys'
+	APP1='fo920sysaa1'
+	BAT1='fo920sysbb1'
+	WEB1='fo920sysww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
 function fo920tst()
 {
 	# Variables
@@ -1237,6 +1250,114 @@ function hc920upg()
 	APP1='hc920upgaa1'
 	BAT1='hc920upgbb1'
 	WEB1='hc920upgww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function mp910dmo()
+{
+	# Variables
+	ENV='mp910dmo'
+	APP1='mp910dmoaa1'
+	BAT1='mp910dmobb1'
+	WEB1='mp910dmoww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function mp910dv1()
+{
+	# Variables
+	ENV='mp910dv1'
+	APP1='mp910dv1aa1'
+	BAT1='mp910dv1bb1'
+	WEB1='mp910dv1ww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function mp910prd()
+{
+	# Variables
+	ENV='mp910prd'
+	APP1='mp910prdaa1'
+	APP2='mp910prdaa2'
+	APP3='mp910prdaa3'
+	APP4='mp910prdaa4'
+	APP5='mp910prdaa5'
+	APP6='mp910prdaa6'
+	BAT1='mp910prdbb1'
+	BAT2='mp910prdbb2'
+	WEB1='mp910prdww1'
+	WEB2='mp910prdww2'
+	WEB3='mp910prdww3'
+	WEB4='mp910prdww4'
+	WEB5='mp910prdww5'
+	WEB6='mp910prdww6'
+	WEI1='mp910prdwi1'
+	WEI2='mp910prdwi2'
+	# Commands
+	prdchk &&
+	dynconf16
+	eval $SVR16
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function hc920pre()
+{
+	# Variables
+	ENV='hc920pre'
+	APP1='hc920preaa1'
+	APP2='hc920preaa2'
+	BAT1='hc920prebb1'
+	BAT2='hc920prebb2'
+	WEB1='hc920preww1'
+	WEB2='hc920preww2'
+	# Commands
+	dynconf6
+	eval $SVR6
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function mp910qa()
+{
+	# Variables
+	ENV='mp910qa'
+	APP1='mp910qa-aa1'
+	BAT1='mp910qa-bb1'
+	WEB1='mp910qa-ww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function mp910sys()
+{
+	# Variables
+	ENV='mp910sys'
+	APP1='mp910sysaa1'
+	BAT1='mp910sysbb1'
+	WEB1='mp910sysww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function mp910upg()
+{
+	# Variables
+	ENV='mp910upg'
+	APP1='mp910upgaa1'
+	BAT1='mp910upgbb1'
+	WEB1='mp910upgww1'
 	# Commands
 	dynconf3
 	eval $SVR3
