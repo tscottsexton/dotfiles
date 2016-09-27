@@ -1403,16 +1403,16 @@ function mp910prd()
 	rm $HOME/${ENV}_tmux.conf
 }
 
-function hc910pre()
+function mp910pre()
 {
 	# Variables
-	ENV='hc920pre'
-	APP1='hc920preaa1'
-	APP2='hc920preaa2'
-	BAT1='hc920prebb1'
-	BAT2='hc920prebb2'
-	WEB1='hc920preww1'
-	WEB2='hc920preww2'
+	ENV='mp910pre'
+	APP1='mp910preaa1'
+	APP2='mp910preaa2'
+	BAT1='mp910prebb1'
+	BAT2='mp910prebb2'
+	WEB1='mp910preww1'
+	WEB2='mp910preww2'
 	# Commands
 	dynconf6
 	eval $SVR6
