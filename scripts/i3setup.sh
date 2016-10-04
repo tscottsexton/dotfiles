@@ -63,7 +63,7 @@ install()
 	sudo -u $SUDO_USER yaourt -S --noconfirm keepass-plugin-http scudcloud
 
 	if [[ $VBOX != "VBOX" ]]; then
-		pacman -S --noconfirm virtualbox clamav
+		pacman -S --noconfirm virtualbox virtualbox-guest-iso clamav
 	fi
 
 	rm -rf /home/$SUDO_USER/.moonchild\ productions/
