@@ -33,7 +33,7 @@ SSVR6='tmux -f $HOME/${ENV}_tmux.conf new -s $ENV "ssh $SHIB1$FQDN2" \; renamew 
 SVR3='tmux -f $HOME/${ENV}_tmux.conf new -s $ENV "ssh $APP1$FQDN" \; renamew -t $ENV:1 ALL \; splitw -t $ENV:1.1 -h "ssh $BAT1$FQDN" \; splitw -t $ENV:1.2 -h "ssh $WEB1$FQDN" \; selectl even-vertical \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
 
 # Command for a 6 server environment (2 app, 2 bat and 2 web)
-SVR6='tmux -f $HOME/${ENV}_tmux.conf new -s $ENV "ssh $APP1$FQDN" \; renamew -t $ENV:1 ALL \; splitw -t $ENV:1.1 -h "ssh $APP2$FQDN" \; splitw -t $ENV:1.2 -v "ssh $BAT1$FQDN" \; splitw -t $ENV:1.3 -v "ssh $BAT2$FQDN" \; splitw -t $ENV:1.1 -h "ssh $WEB1$FQDN" \; splitw -t $ENV:1.4 -h "ssh $WEB2$FQDN" \; selectl tiled \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
+SVR6='tmux -f $HOME/${ENV}_tmux.conf new -s $ENV "ssh $APP1$FQDN" \; renamew -t $ENV:1 ALL \; splitw -t $ENV:1.1 -h "ssh $APP2$FQDN" \; selectl tiled \; splitw -t $ENV:1.2 -v "ssh $BAT1$FQDN" \; splitw -t $ENV:1.3 -v "ssh $BAT2$FQDN" \; selectl tiled \; splitw -t $ENV:1.4 -v "ssh $WEB1$FQDN" \; splitw -t $ENV:1.5 -v "ssh $WEB2$FQDN" \; selectl tiled \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
 
 # Command for a 8 server environment (3 app, 2 bat and 3 web)
 SVR8='tmux -f $HOME/${ENV}_tmux.conf new -s $ENV "ssh $APP1$FQDN" \; renamew -t $ENV:1 ALL \; splitw -t $ENV:1.1 -h "ssh $APP2$FQDN" \; splitw -t $ENV:1.2 -h "ssh $APP3$FQDN" \; splitw -t $ENV:1.3 -v "ssh $BAT1$FQDN" \; selectl tiled \; splitw -t $ENV:1.4 -v "ssh $BAT2$FQDN" \; selectl tiled \; splitw -t $ENV:1.5 -v "ssh $WEB1$FQDN" \; selectl tiled \; splitw -t $ENV1.6 -v "ssh $WEB2$FQDN" \; selectl tiled \; splitw -t $ENV:1.7 -v "ssh $WEB3$FQDN" \; selectl tiled \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
