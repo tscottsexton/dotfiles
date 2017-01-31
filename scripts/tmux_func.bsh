@@ -602,19 +602,6 @@ function cs900sys()
 	rm $HOME/${ENV}_tmux.conf
 }
 
-function cs900trn()
-{
-	# Variables
-	ENV='cs900trn'
-	APP1='cs900trac01'
-	BAT1='cs900trbc01'
-	WEB1='cs900trwc01'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
 function cs900tst()
 {
 	# Variables
@@ -757,19 +744,6 @@ function ep910sys()
 	APP1='ep910dvac09'
 	BAT1='ep910dvbc09'
 	WEB1='ep910dvwc09'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function ep910trn()
-{
-	# Variables
-	ENV='ep910trn'
-	APP1='ep910trac01'
-	BAT1='ep910trbc01'
-	WEB1='ep910trwc01'
 	# Commands
 	dynconf3
 	eval $SVR3
@@ -938,19 +912,6 @@ function fo910sys()
 	APP1='fo910dvac09'
 	BAT1='fo910dvbc09'
 	WEB1='fo910dvwc09'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function fo910trn()
-{
-	# Variables
-	ENV='fo910trn'
-	APP1='fo910trac01'
-	BAT1='fo910trbc01'
-	WEB1='fo910trwc01'
 	# Commands
 	dynconf3
 	eval $SVR3
