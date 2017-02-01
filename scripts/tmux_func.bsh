@@ -1405,6 +1405,19 @@ function mp910qa()
 	rm $HOME/${ENV}_tmux.conf
 }
 
+function mp910tst()
+{
+	# Variables
+	ENV='mp910tst'
+	APP1='mp910tstaa1'
+	BAT1='mp910tstbb1'
+	WEB1='mp910tstww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
 function mp910sys()
 {
 	# Variables
