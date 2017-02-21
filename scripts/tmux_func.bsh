@@ -1015,6 +1015,30 @@ function fo920qa()
 	rm $HOME/${ENV}_tmux.conf
 }
 
+function fo920spt()
+{
+	# Variables
+	ENV='fo920spt'
+	APP1='fo920sptaa1'
+	BAT1='fo920sptbb1'
+	WEB1='fo920sptww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+{
+	# Variables
+	ENV='fo920sys'
+	APP1='fo920sysaa1'
+	BAT1='fo920sysbb1'
+	WEB1='fo920sysww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
 function fo920sys()
 {
 	# Variables
