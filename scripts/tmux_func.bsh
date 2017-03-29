@@ -96,7 +96,6 @@ SALL16='bind-key A setw synchronize-panes off \; setw synchronize-panes off \; s
 SALL17='bind-key A setw synchronize-panes off \; selectp -t $ENV:1.2 \; send-keys escape \; selectp -t $ENV:1.3 \; send-keys escape \; selectp -t $ENV:1.4 \; send-keys escape \; selectp -t $ENV:1.5 \; send-keys escape \; selectp -t $ENV:1.6 \; send-keys escape \; selectp -t $ENV:1.7 \; send-keys escape \; selectp -t $ENV:1.8 \; send-keys escape \; selectp -t $ENV:1.9 \; send-keys escape \; selectp -t $ENV:1.10 \; send-keys escape \; selectp -t $ENV:1.11 \; send-keys escape \; selectp -t $ENV:1.12 \; send-keys escape \; selectp -t $ENV:1.13 \; send-keys escape \; selectp -t $ENV:1.14 \; send-keys escape \; selectp -t $ENV:1.15 \; send-keys escape \; selectp -t $ENV:1.16 \; send-keys escape \; selectp -t $ENV:1.17 \; send-keys escape \; selectp -t $ENV:1.1 \; send-keys escape \; setw synchronize-panes on'
 
 
-
 # Select all APP servers binding
 
 # Select all app servers for 3 server environment
@@ -654,13 +653,55 @@ function cs920dv1()
 	rm $HOME/${ENV}_tmux.conf
 }
 
-function ep910dmo()
+function cs920pre()
 {
 	# Variables
-	ENV='ep910dmo'
-	APP1='ep910dvac01'
-	BAT1='ep910dvbc01'
-	WEB1='ep910dvwc01'
+	ENV='cs920pre'
+	APP1='cs920preaa1'
+	APP2='cs920preaa2'
+	BAT1='cs920prebb1'
+	BAT2='cs920prebb2'
+	WEB1='cs920preww1'
+	WEB2='cs920preww2'
+	# Commands
+	dynconf6
+	eval $SVR6
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function cs920qa()
+{
+	# Variables
+	ENV='cs920qa'
+	APP1='cs920qa-aa1'
+	BAT1='cs920qa-bb1'
+	WEB1='cs920qa-ww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function cs920sys()
+{
+	# Variables
+	ENV='cs920sys'
+	APP1='cs920sysaa1'
+	BAT1='cs920sysbb1'
+	WEB1='cs920sysww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function cs920upg()
+{
+	# Variables
+	ENV='cs920upg'
+	APP1='cs920upgaa1'
+	BAT1='cs920upgbb1'
+	WEB1='cs920upgww1'
 	# Commands
 	dynconf3
 	eval $SVR3
@@ -708,74 +749,6 @@ function ep910prd()
 	rm $HOME/${ENV}_tmux.conf
 }
 
-function ep910pre()
-{
-	# Variables
-	ENV='ep910pre'
-	APP1='ep910peac01'
-	APP2='ep910peac02'
-	BAT1='ep910pebc01'
-	BAT2='ep910pebc02'
-	WEB1='ep910pewc01'
-	WEB2='ep910pewc02'
-	# Commands
-	dynconf6
-	eval $SVR6
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function ep910qa()
-{
-	# Variables
-	ENV='ep910qa'
-	APP1='ep910dvac05'
-	BAT1='ep910dvbc05'
-	WEB1='ep910dvwc05'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function ep910spt()
-{
-	# Variables
-	ENV='ep910spt'
-	APP1='ep910dvac07'
-	BAT1='ep910dvbc07'
-	WEB1='ep910dvwc07'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function ep910sys()
-{
-	# Variables
-	ENV='ep910sys'
-	APP1='ep910dvac09'
-	BAT1='ep910dvbc09'
-	WEB1='ep910dvwc09'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function ep910tst()
-{
-	# Variables
-	ENV='ep910tst'
-	APP1='ep910dvac08'
-	BAT1='ep910dvbc08'
-	WEB1='ep910dvwc08'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
 function ep910upg()
 {
 	# Variables
@@ -783,19 +756,6 @@ function ep910upg()
 	APP1='ep910dvac04'
 	BAT1='ep910dvbc04'
 	WEB1='ep910dvwc04'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function fo910dmo()
-{
-	# Variables
-	ENV='fo910dmo'
-	APP1='fo910dvac01'
-	BAT1='fo910dvbc01'
-	WEB1='fo910dvwc01'
 	# Commands
 	dynconf3
 	eval $SVR3
@@ -812,28 +772,6 @@ function fo910dv1()
 	# Commands
 	dynconf3
 	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function fo910lt()
-{
-	# Variables
-	ENV='fo910lt'
-	APP1='fo910ltac01'
-	APP2='fo910ltac02'
-	APP3='fo910ltac03'
-	BAT1='fo910ltbc01'
-	BAT2='fo910ltbc02'
-	BAT3='fo910ltbc03'
-	WEB1='fo910ltwc01'
-	WEB2='fo910ltwc02'
-	WEB3='fo910ltwc03'
-	WEB4='fo910ltwc04'
-	WEB5='fo910ltwc05'
-	WEB6='fo910ltwc06'
-	# Commands
-	dynconf12
-	eval $SVR12
 	rm $HOME/${ENV}_tmux.conf
 }
 
@@ -860,51 +798,6 @@ function fo910prd()
 	rm $HOME/${ENV}_tmux.conf
 }
 
-function fo910pre()
-{
-	# Variables
-	ENV='fo910pre'
-	APP1='fo910peac01'
-	APP2='fo910peac02'
-	BAT1='fo910pebc01'
-	BAT2='fo910pebc02'
-	WEB1='fo910pewc01'
-	WEB2='fo910pewc02'
-	# Commands
-	dynconf6
-	eval $SVR6
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function fo910qa()
-{
-	# Variables
-	ENV='fo910qa'
-	APP1='fo910dvac05'
-	BAT1='fo910dvbc05'
-	WEB1='fo910dvwc05'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function fo910rpt()
-{
-	# Variables
-	ENV='fo910rpt'
-	APP1='fo910rpac01'
-	APP2='fo910rpac02'
-	BAT1='fo910rpbc01'
-	BAT2='fo910rpbc02'
-	WEB1='fo910rpwc01'
-	WEB2='fo910rpwc02'
-	# Commands
-	dynconf6
-	eval $SVR6
-	rm $HOME/${ENV}_tmux.conf
-}
-
 function fo910spt()
 {
 	# Variables
@@ -912,32 +805,6 @@ function fo910spt()
 	APP1='fo910dvac07'
 	BAT1='fo910dvbc07'
 	WEB1='fo910dvwc07'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function fo910sys()
-{
-	# Variables
-	ENV='fo910sys'
-	APP1='fo910dvac09'
-	BAT1='fo910dvbc09'
-	WEB1='fo910dvwc09'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function fo910tst()
-{
-	# Variables
-	ENV='fo910tst'
-	APP1='fo910dvac10'
-	BAT1='fo910dvbc10'
-	WEB1='fo910dvwc10'
 	# Commands
 	dynconf3
 	eval $SVR3
@@ -957,19 +824,6 @@ function fo910upg()
 	rm $HOME/${ENV}_tmux.conf
 }
 
-function fo920dv1()
-{
-	# Variables
-	ENV='fo920dv1'
-	APP1='fo920dv1aa1'
-	BAT1='fo920dv1bb1'
-	WEB1='fo920dv1ww1'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
 function fo920dmo()
 {
 	# Variables
@@ -977,6 +831,19 @@ function fo920dmo()
 	APP1='fo920dmoaa1'
 	BAT1='fo920dmobb1'
 	WEB1='fo920dmoww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function fo920dv1()
+{
+	# Variables
+	ENV='fo920dv1'
+	APP1='fo920dv1aa1'
+	BAT1='fo920dv1bb1'
+	WEB1='fo920dv1ww1'
 	# Commands
 	dynconf3
 	eval $SVR3
@@ -1012,6 +879,22 @@ function fo920qa()
 	# Commands
 	dynconf3
 	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function fo920rpt()
+{
+	# Variables
+	ENV='fo920rpt'
+	APP1='fo920rptaa1'
+	APP2='fo920rptaa2'
+	BAT1='fo920rptbb1'
+	BAT2='fo920rptbb2'
+	WEB1='fo920rptww1'
+	WEB2='fo920rptww2'
+	# Commands
+	dynconf6
+	eval $SVR6
 	rm $HOME/${ENV}_tmux.conf
 }
 
@@ -1067,66 +950,6 @@ function fo920upg()
 	rm $HOME/${ENV}_tmux.conf
 }
 
-function hc910dv1()
-{
-	# Variables
-	ENV='hc910dv1'
-	APP1='hc910dvac03'
-	BAT1='hc910dvbc03'
-	WEB1='hc910dvwc03'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function hc910lt()
-{
-	# Variables
-	ENV='hc910lt'
-	APP1='hc910ltac01'
-	APP2='hc910ltac02'
-	APP3='hc910ltac03'
-	BAT1='hc910ltbc01'
-	BAT2='hc910ltbc02'
-	BAT3='hc910ltbc03'
-	WEB1='hc910ltwc01'
-	WEB2='hc910ltwc02'
-	WEB3='hc910ltwc03'
-	WEB4='hc910ltwc04'
-	WEB5='hc910ltwc05'
-	WEB6='hc910ltwc06'
-	# Commands
-	dynconf12
-	eval $SVR12
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function hc910prd()
-{
-	# Variables
-	ENV='hc910prd'
-	APP1='hc910prac01'
-	APP2='hc910prac02'
-	APP3='hc910prac03'
-	API1='hc910priac01'
-	API2='hc910priac02'
-	BAT1='hc910prbc01'
-	BAT2='hc910prbc02'
-	BAT3='hc910prbc03'
-	WEB1='hc910prwc01'
-	WEB2='hc910prwc02'
-	WEB3='hc910prwc03'
-	WEB4='hc910prwc04'
-	WEB5='hc910prwc05'
-	WEB6='hc910prwc06'
-	# Commands
-	prdchk &&
-	dynconf14
-	eval $SVR14
-	rm $HOME/${ENV}_tmux.conf
-}
-
 function hc910pre()
 {
 	# Variables
@@ -1140,35 +963,6 @@ function hc910pre()
 	# Commands
 	dynconf6
 	eval $SVR6
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function hc910rpt()
-{
-	# Variables
-	ENV='hc910rpt'
-	APP1='hc910rpac01'
-	APP2='hc910rpac02'
-	BAT1='hc910rpbc01'
-	BAT2='hc910rpbc02'
-	WEB1='hc910rpwc01'
-	WEB2='hc910rpwc02'
-	# Commands
-	dynconf6
-	eval $SVR6
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function hc910trn()
-{
-	# Variables
-	ENV='hc910trn'
-	APP1='hc910trac01'
-	BAT1='hc910trbc01'
-	WEB1='hc910trwc01'
-	# Commands
-	dynconf3
-	eval $SVR3
 	rm $HOME/${ENV}_tmux.conf
 }
 
@@ -1310,19 +1104,6 @@ function hc920sys()
 	rm $HOME/${ENV}_tmux.conf
 }
 
-function hc920trn()
-{
-	# Variables
-	ENV='hc920trn'
-	APP1='hc920trnaa1'
-	BAT1='hc920trnbb1'
-	WEB1='hc920trnww1'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
 function hc920tst()
 {
 	# Variables
@@ -1395,6 +1176,8 @@ function mp910prd()
 	WEB6='mp910prdww6'
 	WEI1='mp910prdwi1'
 	WEI2='mp910prdwi2'
+	WEI3='mp910prdwi3'
+	WEI4='mp910prdwi4'
 	# Commands
 	prdchk &&
 	dynconf16
@@ -1431,13 +1214,13 @@ function mp910qa()
 	rm $HOME/${ENV}_tmux.conf
 }
 
-function mp910tst()
+function mp910spt()
 {
 	# Variables
-	ENV='mp910tst'
-	APP1='mp910tstaa1'
-	BAT1='mp910tstbb1'
-	WEB1='mp910tstww1'
+	ENV='mp910spt'
+	APP1='mp910sptaa1'
+	BAT1='mp910sptbb1'
+	WEB1='mp910sptww1'
 	# Commands
 	dynconf3
 	eval $SVR3
@@ -1451,6 +1234,19 @@ function mp910sys()
 	APP1='mp910sysaa1'
 	BAT1='mp910sysbb1'
 	WEB1='mp910sysww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function mp910tst()
+{
+	# Variables
+	ENV='mp910tst'
+	APP1='mp910tstaa1'
+	BAT1='mp910tstbb1'
+	WEB1='mp910tstww1'
 	# Commands
 	dynconf3
 	eval $SVR3
