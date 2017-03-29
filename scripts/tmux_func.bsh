@@ -1194,7 +1194,7 @@ function mp910prd()
 	APP5='mp910prdaa5'
 	APP6='mp910prdaa6'
 	API1='mp910prdai1'
-	API2='mp910prdai2
+	API2='mp910prdai2'
 	BAT1='mp910prdbb1'
 	BAT2='mp910prdbb2'
 	WEB1='mp910prdww1'
