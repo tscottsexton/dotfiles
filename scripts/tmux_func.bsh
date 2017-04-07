@@ -884,6 +884,8 @@ function fo920prd()
 	APP1='fo920prdaa1'
 	APP2='fo920prdaa2'
 	APP3='fo920prdaa3'
+	API1='fo920prdai1'
+	API2='fo920prdai2'
 	BAT1='fo920prdbb1'
 	BAT2='fo920prdbb2'
 	WEB1='fo920prdww1'
@@ -891,8 +893,8 @@ function fo920prd()
 	WEB3='fo920prdww3'
 	# Commands
 	prdchk &&
-	dynconf8
-	eval $SVR8
+	dynconf10
+	eval $SVR10
 	rm $HOME/${ENV}_tmux.conf
 }
 
