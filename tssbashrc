@@ -36,7 +36,6 @@ alias q='exit'
 alias cls='clear'
 alias c='clear'
 alias sl=ls
-alias news='newsbeuter'
 alias ll='ls -lah'
 alias grep='grep --color=tty -d skip'
 alias ga='git add'
@@ -59,6 +58,9 @@ alias proj='xrandr --output VGA1 --auto'
 alias projoff='xrandr --ouput VGA1 --off'
 alias update="yaourt -Syua"
 alias killss='~/scripts/killss.bsh'
+
+# Start fasd
+eval "$(fasd --init auto)"
 
 # ex - archive extractor
 # usage: ex <file>
