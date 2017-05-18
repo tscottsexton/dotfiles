@@ -27,6 +27,7 @@ export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 alias ls='ls --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
 alias admin='ssh tssexto2@tutelage.oit.ncsu.edu'
 alias cricket='ssh tssexto2@cricket.oit.ncsu.edu'
+alias pup='ssh tssexto2.re@pci100pem.unity.ncsu.edu'
 alias fuck='eval $(thefuck $(fc -ln -1))'
 alias vi='vim'
 alias svi='sudo vim'
