@@ -1186,6 +1186,37 @@ function mp910dv1()
 	rm $HOME/${ENV}_tmux.conf
 }
 
+function mp910lt()
+{
+	# Variables
+	ENV='mp910lt'
+	APP1='mp910lt-aa1'
+	APP2='mp910lt-aa2'
+	APP3='mp910lt-aa3'
+	APP4='mp910lt-aa4'
+	APP5='mp910lt-aa5'
+	APP6='mp910lt-aa6'
+	API1='mp910lt-ai1'
+	API2='mp910lt-ai2'
+	BAT1='mp910lt-bb1'
+	BAT2='mp910lt-bb2'
+	WEB1='mp910lt-ww1'
+	WEB2='mp910lt-ww2'
+	WEB3='mp910lt-ww3'
+	WEB4='mp910lt-ww4'
+	WEB5='mp910lt-ww5'
+	WEB6='mp910lt-ww6'
+	WEI1='mp910lt-wi1'
+	WEI2='mp910lt-wi2'
+	WEI3='mp910lt-wi3'
+	WEI4='mp910lt-wi4'
+	# Commands
+	prdchk &&
+	dynconf20
+	eval $SVR20
+	rm $HOME/${ENV}_tmux.conf
+}
+
 function mp910prd()
 {
 	# Variables
