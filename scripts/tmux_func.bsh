@@ -736,96 +736,6 @@ function cs920upg()
 	rm $HOME/${ENV}_tmux.conf
 }
 
-function ep910dv1()
-{
-	# Variables
-	ENV='ep910dv1'
-	APP1='ep910dvac02'
-	BAT1='ep910dvbc02'
-	WEB1='ep910dvwc02'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function ep910prd()
-{
-	# Variables
-	ENV='ep910prd'
-	APP1='ep910prac01'
-	APP2='ep910prac02'
-	APP3='ep910prac03'
-	APP4='ep910prac04'
-	APP5='ep910prac05'
-	APP6='ep910prac06'
-	BAT1='ep910prbc01'
-	BAT2='ep910prbc02'
-	BAT3='ep910prbc03'
-	WEB1='ep910prwc01'
-	WEB2='ep910prwc02'
-	WEB3='ep910prwc03'
-	WEB4='ep910prwc04'
-	WEB5='ep910prwc05'
-	WEB6='ep910prwc06'
-	WEI1='ep910priwc01'
-	WEI2='ep910priwc02'
-	# Commands
-	prdchk &&
-	dynconf17A
-	eval $SVR17A
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function ep910upg()
-{
-	# Variables
-	ENV='ep910upg'
-	APP1='ep910dvac04'
-	BAT1='ep910dvbc04'
-	WEB1='ep910dvwc04'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function fo910dv1()
-{
-	# Variables
-	ENV='fo910dv1'
-	APP1='fo910dvac03'
-	BAT1='fo910dvbc03'
-	WEB1='fo910dvwc03'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function fo910prd()
-{
-	# Variables
-	ENV='fo910prd'
-	APP1='fo910prac01'
-	APP2='fo910prac02'
-	APP3='fo910prac03'
-	BAT1='fo910prbc01'
-	BAT2='fo910prbc02'
-	BAT3='fo910prbc03'
-	WEB1='fo910prwc01'
-	WEB2='fo910prwc02'
-	WEB3='fo910prwc03'
-	WEB4='fo910prwc04'
-	WEB5='fo910prwc05'
-	WEB6='fo910prwc06'
-	# Commands
-	prdchk &&
-	dynconf12
-	eval $SVR12
-	rm $HOME/${ENV}_tmux.conf
-}
-
 function fo910spt()
 {
 	# Variables
@@ -833,19 +743,6 @@ function fo910spt()
 	APP1='fo910dvac07'
 	BAT1='fo910dvbc07'
 	WEB1='fo910dvwc07'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function fo910upg()
-{
-	# Variables
-	ENV='fo910upg'
-	APP1='fo910dvac04'
-	BAT1='fo910dvbc04'
-	WEB1='fo910dvwc04'
 	# Commands
 	dynconf3
 	eval $SVR3
@@ -875,6 +772,26 @@ function fo920dv1()
 	# Commands
 	dynconf3
 	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function fo920lt()
+{
+	# Variables
+	ENV='fo920lt'
+	APP1='fo920lt-aa1'
+	APP2='fo920lt-aa2'
+	APP3='fo920lt-aa3'
+	API1='fo920lt-ai1'
+	API2='fo920lt-ai2'
+	BAT1='fo920lt-bb1'
+	BAT2='fo920lt-bb2'
+	WEB1='fo920lt-ww1'
+	WEB2='fo920lt-ww2'
+	WEB3='fo920lt-ww3'
+	# Commands
+	dynconf10
+	eval $SVR10
 	rm $HOME/${ENV}_tmux.conf
 }
 
