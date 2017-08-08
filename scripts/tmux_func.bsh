@@ -1250,7 +1250,7 @@ function shibdv()
 {
 	# Variables
 	ENV='shibdv'
-	SHIB1='shib11sp'
+	SHIB1='shibmdevww1'
 	# Commands
 	dynconfshib
 	eval $SSVR1
@@ -1261,18 +1261,18 @@ function shibsys()
 {
 	# Variables
 	ENV='shibsys'
-	SHIB1='shib10sp'
+	SHIB1='shibmsysww1'
 	# Commands
 	dynconfshib
 	eval $SSVR1
 	rm $HOME/${ENV}_tmux.conf
 }
 
-function shibtest()
+function shibpre()
 {
 	# Variables
-	ENV='shibtest'
-	SHIB1='shib11sp'
+	ENV='shibpre'
+	SHIB1='shibmpreww1'
 	# Commands
 	dynconfshib
 	eval $SSVR1
@@ -1283,10 +1283,10 @@ function shiblt()
 {
 	# Variables
 	ENV='shiblt'
-	SHIB1='shib110sp'
-	SHIB2='shib111sp'
-	SHIB3='shib210sp'
-	SHIB4='shib211sp'
+	SHIB1='shibmlt-ww1'
+	SHIB2='shibmlt-ww2'
+	SHIB3='shibmlt-ww3'
+	SHIB4='shibmlt-ww4'
 	# Commands
 	dynconfshib
 	eval $SSVR4
@@ -1297,12 +1297,12 @@ function shibprd()
 {
 	# Variables
 	ENV='shibprd'
-	SHIB1='shib100sp'
-	SHIB2='shib101sp'
-	SHIB3='shib120sp'
-	SHIB4='shib200sp'
-	SHIB5='shib201sp'
-	SHIB6='shib220sp'
+	SHIB1='shibmprdww1'
+	SHIB2='shibmprdww2'
+	SHIB3='shibmprdww3'
+	SHIB4='shibmprdww4'
+	SHIB5='shibmprdww5'
+	SHIB6='shibmprdww6'
 	# Commands
 	prdchk &&
 	dynconfshib
