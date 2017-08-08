@@ -1246,10 +1246,10 @@ function mp910upg()
 	rm $HOME/${ENV}_tmux.conf
 }
 
-function shibdv()
+function shibdev()
 {
 	# Variables
-	ENV='shibdv'
+	ENV='shibdev'
 	SHIB1='shibmdevww1'
 	# Commands
 	dynconfshib
