@@ -816,6 +816,21 @@ function fo920prd()
 	rm $HOME/${ENV}_tmux.conf
 }
 
+function fo920pre()
+{
+	# Variables
+	ENV='fo920pre'
+	APP1='fo920preaa1'
+	APP2='fo920preaa2'
+	BAT1='fo920prebb1'
+	BAT2='fo920prebb2'
+	WEB1='fo920preww1'
+	WEB2='fo920preww2'
+	# Commands
+	dynconf6
+	eval $SVR6
+	rm $HOME/${ENV}_tmux.conf
+}
 function fo920qa()
 {
 	# Variables
