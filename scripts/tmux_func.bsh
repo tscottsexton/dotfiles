@@ -682,6 +682,7 @@ function cs920dv1()
 }
 
 function cs920prd()
+{
 	# Variables
 	ENV='cs920prd'
 	APP1='cs920prdaa1'
@@ -705,6 +706,7 @@ function cs920prd()
 	dynconf16
 	eval $SVR16
 	rm $HOME/${ENV}_tmux.conf
+}
 
 
 function cs920pre()
