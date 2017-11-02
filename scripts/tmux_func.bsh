@@ -751,6 +751,19 @@ function cs920sys()
 	rm $HOME/${ENV}_tmux.conf
 }
 
+function cs920tst()
+{
+	# Variables
+	ENV='cs920tst'
+	APP1='cs920tstaa1'
+	BAT1='cs920tstbb1'
+	WEB1='cs920tstww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
 function cs920upg()
 {
 	# Variables
