@@ -25,6 +25,7 @@ export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
 # Here are all of my aliases
 alias ls='ls --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
+alias priv='ssh tssexto2@aisprivwks1.oit.ncsu.edu'
 alias admin='ssh tssexto2@tutelage.oit.ncsu.edu'
 alias cricket='ssh tssexto2@cricket.oit.ncsu.edu'
 alias pup='ssh tssexto2.re@pci100pem.unity.ncsu.edu'
