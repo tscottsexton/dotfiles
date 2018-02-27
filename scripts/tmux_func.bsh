@@ -1143,6 +1143,7 @@ function jvwebprd()
 	JVW1='jvwebprdww1'
 	JVW2='jvwebprdww2'
 	# Commands
+	prdchk &&
 	dynconfshib
         eval $JSVR2
         rm $HOME/${ENV}_tmux.conf
