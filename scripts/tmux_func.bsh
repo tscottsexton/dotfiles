@@ -24,6 +24,9 @@ BCONF=$HOME/basetmux.conf
 # Command for a 1 server Shibboleth environment
 SSVR1='tmux -f $HOME/${ENV}_tmux.conf new -s $ENV "ssh $USER@$SHIB1$FQDN2" \; renamew -t $ENV:1 ALL'
 
+# Command for a 2 server jv/weblogic environment
+JSVR2='tmux -f $HOME/${ENV}_tmux.conf new -s $ENV "ssh $USER@$JVW1$FQDN2" \; renamew -t $ENV:1 ALL \' splitw -t $ENV:1.1 -h "ssh $USER@$JVW2$FQDN2" \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
+
 # Command for a 4 server Shibboleth environment
 SSVR4='tmux -f $HOME/${ENV}_tmux.conf new -s $ENV "ssh $USER@$SHIB1$FQDN2" \; renamew -t $ENV:1 ALL \; splitw -t $ENV:1.1 -h "ssh $USER@$SHIB2$FQDN2" \; splitw -t $ENV:1.2 -h "ssh $USER@$SHIB3$FQDN2" \; splitw -t $ENV:1.3 -h "ssh $USER@$SHIB4$FQDN2" \; selectl tiled \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
 
@@ -1131,6 +1134,18 @@ function hc920upg()
 	dynconf3
 	eval $SVR3
 	rm $HOME/${ENV}_tmux.conf
+}
+
+function jvwebprd()
+{
+	# Variables
+	ENV='jvwebprd'
+	JVW1='jvwebprdww1'
+	JVW2='jvwebprdww2'
+	# Commands
+	dynconfshib
+        eval $JSVR2
+        rm $HOME/${ENV}_tmux.conf
 }
 
 function mp910dmo()
