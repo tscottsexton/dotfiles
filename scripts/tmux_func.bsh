@@ -684,6 +684,33 @@ function cs920dv1()
 	rm $HOME/${ENV}_tmux.conf
 }
 
+function cs920lt()
+{
+	# Variables
+	ENV='cs920lt'
+	APP1='cs920lt-aa1'
+	APP2='cs920lt-aa2'
+	APP3='cs920lt-aa3'
+	APP4='cs920lt-aa4'
+	APP5='cs920lt-aa5'
+	APP6='cs920lt-aa6'
+	API1='cs920lt-ai1'
+	API2='cs920lt-ai2'
+	BAT1='cs920lt-bb1'
+	BAT2='cs920lt-bb2'
+	WEB1='cs920lt-ww1'
+	WEB2='cs920lt-ww2'
+	WEB3='cs920lt-ww3'
+	WEB4='cs920lt-ww4'
+	WEB5='cs920lt-ww5'
+	WEB6='cs920lt-ww6'
+	# Commands
+	prdchk
+	dynconf16
+	eval $SVR16
+	rm $HOME/${ENV}_tmux.conf
+}
+
 function cs920prd()
 {
 	# Variables
