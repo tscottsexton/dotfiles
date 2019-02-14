@@ -468,195 +468,6 @@ function dynconf20()
 
 # Functions to start Tmux Environments
 
-function cs900dmo()
-{
-	# Variables
-	ENV='cs900dmo'
-	APP1='cs900dvac01'
-	BAT1='cs900dvbc01'
-	WEB1='cs900dvwc01'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function cs900dv1()
-{
-	# Variables
-	ENV='cs900dv1'
-	APP1='cs900dvac05'
-	BAT1='cs900dvbc05'
-	WEB1='cs900dvwc05'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function cs900dv2()
-{
-	# Variables
-	ENV='cs900dv2'
-	APP1='cs900dvac03'
-	BAT1='cs900dvbc03'
-	WEB1='cs900dvwc03'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function cs900lt()
-{
-	# Variables
-	ENV='cs900lt'
-	APP1='cs900ltac01'
-	APP2='cs900ltac02'
-	APP3='cs900ltac03'
-	APP4='cs900ltac04'
-	APP5='cs900ltac05'
-	APP6='cs900ltac06'
-	BAT1='cs900ltbc01'
-	BAT2='cs900ltbc02'
-	BAT3='cs900ltbc03'
-	WEB1='cs900ltwc01'
-	WEB2='cs900ltwc02'
-	WEB3='cs900ltwc03'
-	WEB4='cs900ltwc04'
-	WEB5='cs900ltwc05'
-	WEB6='cs900ltwc06'
-	# Commands
-	dynconf15
-	eval $SVR15
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function cs900prd()
-{
-	# Variables
-	ENV='cs900prd'
-	APP1='cs900prac01'
-	APP2='cs900prac02'
-	APP3='cs900prac03'
-	APP4='cs900prac04'
-	APP5='cs900prac05'
-	APP6='cs900prac06'
-	API1='cs900priac01'
-	API2='cs900priac02'
-	BAT1='cs900prbc01'
-	BAT2='cs900prbc02'
-	BAT3='cs900prbc03'
-	WEB1='cs900prwc01'
-	WEB2='cs900prwc02'
-	WEB3='cs900prwc03'
-	WEB4='cs900prwc04'
-	WEB5='cs900prwc05'
-	WEB6='cs900prwc06'
-	# Commands
-	prdchk &&			# Call the sanity check function
-	dynconf17B
-	eval $SVR17B
-	rm $HOME/${ENV}_tmux.conf
-}
-
-
-function cs900pre()
-{
-	# Variables
-	ENV='cs900pre'
-	APP1='cs900peac01'
-	APP2='cs900peac02'
-	BAT1='cs900pebc01'
-	BAT2='cs900pebc02'
-	WEB1='cs900pewc01'
-	WEB2='cs900pewc02'
-	# Commands
-	dynconf6
-	eval $SVR6
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function cs900qa()
-{
-	# Variables
-	ENV='cs900qa'
-	APP1='cs900dvac06'
-	BAT1='cs900dvbc06'
-	WEB1='cs900dvwc06'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function cs900rpt()
-{
-	# Variables
-	ENV='cs900rpt'
-	APP1='cs900rpac01'
-	APP2='cs900rpac02'
-	BAT1='cs900rpbc01'
-	BAT2='cs900rpbc02'
-	WEB1='cs900rpwc01'
-	WEB2='cs900rpwc02'
-	# Commands
-	dynconf6
-	eval $SVR6
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function cs900spt()
-{
-	# Variables
-	ENV='cs900spt'
-	APP1='cs900dvac08'
-	BAT1='cs900dvbc08'
-	WEB1='cs900dvwc08'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function cs900sys()
-{
-	# Variables
-	ENV='cs900sys'
-	APP1='cs900dvac09'
-	BAT1='cs900dvbc09'
-	WEB1='cs900dvwc09'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function cs900tst()
-{
-	# Variables
-	ENV='cs900tst'
-	APP1='cs900dvac10'
-	BAT1='cs900dvbc10'
-	WEB1='cs900dvwc10'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
-
-function cs900upg()
-{
-	# Variables
-	ENV='cs900tst'
-	APP1='cs900dvac04'
-	BAT1='cs900dvbc04'
-	WEB1='cs900dvwc04'
-	# Commands
-	dynconf3
-	eval $SVR3
-	rm $HOME/${ENV}_tmux.conf
-}
 
 function cs920dmo()
 {
@@ -762,6 +573,19 @@ function cs920qa()
 	APP1='cs920qa-aa1'
 	BAT1='cs920qa-bb1'
 	WEB1='cs920qa-ww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function cs920spt()
+{
+	# Variables
+	ENV='cs920spt'
+	APP1='cs920sptaa1'
+	BAT1='cs920sptbb1'
+	WEB1='cs920sptww1'
 	# Commands
 	dynconf3
 	eval $SVR3
@@ -1193,9 +1017,9 @@ function mp910dv1()
 {
 	# Variables
 	ENV='mp910dv1'
-	APP1='mp910dv1aa1'
-	BAT1='mp910dv1bb1'
-	WEB1='mp910dv1ww1'
+	APP1='mp916dv1aa1'
+	BAT1='mp916dv1bb1'
+	WEB1='mp916dv1ww1'
 	# Commands
 	dynconf3
 	eval $SVR3
@@ -1261,6 +1085,22 @@ function mp910prd()
 	prdchk &&
 	dynconf20
 	eval $SVR20
+	rm $HOME/${ENV}_tmux.conf
+}
+
+function mp916pre()
+{
+	# Variables
+	ENV='mp916pre'
+	APP1='mp916preaa1'
+	APP2='mp916preaa2'
+	BAT1='mp916prebb1'
+	BAT2='mp916prebb2'
+	WEB1='mp916preww1'
+	WEB2='mp916preww2'
+	# Commands
+	dynconf6
+	eval $SVR6
 	rm $HOME/${ENV}_tmux.conf
 }
 
