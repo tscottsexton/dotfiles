@@ -21,15 +21,19 @@ export HISTFILESIZE=${HISTSIZE}
 export HISTCONTROL=ignoreboth
 export JAVA_FONTS=/usr/share/fonts/TTF
 export EDITOR=/usr/bin/vim
-export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+
+# ssh-agent stuff
+SOCK=/tmp/tssexto2.re/ssh-agent.sock
+SOCK_DIR=`dirname $SOCK`
+[ -d "$SOCK_DIR" ] || mkdir -m700 $SOCK_DIR
+[ -f "$SOCK" ] || eval `ssh-agent -a "$SOCK" -t 10h`
 
 # Here are all of my aliases
 alias ls='ls --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
-alias priv='ssh tssexto2@aisprivwks1.oit.ncsu.edu'
 alias admin='ssh tssexto2@tutelage.oit.ncsu.edu'
 alias cricket='ssh tssexto2@cricket.oit.ncsu.edu'
 alias pup='ssh tssexto2.re@pci100pem.unity.ncsu.edu'
-alias fuck='eval $(thefuck $(fc -ln -1))'
+alias nore='sudo su - tssexto2'
 alias vi='vim'
 alias svi='sudo vim'
 alias ...='cd ../..'
@@ -40,29 +44,9 @@ alias c='clear'
 alias sl=ls
 alias ll='ls -lah'
 alias grep='grep --color=tty -d skip'
-alias ga='git add'
-alias gc='git commit -m'
-alias gpush='git push origin master'
-alias gpull='git pull origin master'
 alias cp="cp -i"                          # confirm before overwriting something
 alias df='df -h'                          # human-readable sizes
 alias free='free -m'                      # show sizes in MB
-alias np='vim PKGBUILD'
-alias fixit='sudo rm -f /var/lib/pacman/db.lck'
-alias con='vim $HOME/.i3/config'
-alias comp='vim $HOME/.config/compton.conf'
-alias inst='sudo pacman -S'
-alias mirrors='sudo pacman-mirrors -g'
-alias printer='system-config-printer'
-alias trilug='weechat'
-alias sysadmin='weechat -d ~/.weechat/weechat2'
-alias proj='xrandr --output VGA1 --auto'
-alias projoff='xrandr --ouput VGA1 --off'
-alias update="yaourt -Syua"
-alias killss='~/scripts/killss.bsh'
-
-# Start fasd
-eval "$(fasd --init auto)"
 
 # ex - archive extractor
 # usage: ex <file>

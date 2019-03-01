@@ -31,7 +31,7 @@ JSVR2='tmux -f $HOME/${ENV}_tmux.conf new -s $ENV "ssh $USER@$JVW1$FQDN2" \; ren
 SSVR4='tmux -f $HOME/${ENV}_tmux.conf new -s $ENV "ssh $USER@$SHIB1$FQDN2" \; renamew -t $ENV:1 ALL \; splitw -t $ENV:1.1 -h "ssh $USER@$SHIB2$FQDN2" \; splitw -t $ENV:1.2 -h "ssh $USER@$SHIB3$FQDN2" \; splitw -t $ENV:1.3 -h "ssh $USER@$SHIB4$FQDN2" \; selectl tiled \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
 
 # Command for a 6 server Shibboleth environment
-SSVR6='tmux -f $HOME/${ENV}_tmux.conf new -s $ENV "ssh $USER@$SHIB1$FQDN2" \; renamew -t $ENV:1 ALL \; splitw -t $ENV:1.1 -h "ssh $USER@$SHIB2$FQDN2" \; splitw -t $ENV:1.2 -h "ssh $USER@$SHIB3$FQDN2" \; splitw -t $ENV:1.3 -h "ssh $USER@$SHIB4$FQDN2" \; splitw -t $ENV:1.4 -h "ssh $USER@$SHIB5$FQDN2" \; splitw -t $ENV:1.5 -h ssh "$SHIB6$FQDN2" \; selectl tiled \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
+SSVR6='tmux -f $HOME/${ENV}_tmux.conf new -s $ENV "ssh $USER@$SHIB1$FQDN2" \; renamew -t $ENV:1 ALL \; splitw -t $ENV:1.1 -h "ssh $USER@$SHIB2$FQDN2" \; splitw -t $ENV:1.2 -h "ssh $USER@$SHIB3$FQDN2" \; splitw -t $ENV:1.3 -h "ssh $USER@$SHIB4$FQDN2" \; splitw -t $ENV:1.4 -h "ssh $USER@$SHIB5$FQDN2" \; splitw -t $ENV:1.5 -h "ssh $USER@$SHIB6$FQDN2" \; selectl tiled \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
 
 # Command for a 3 server environment (1 app, 1 bat and 1 web)
 SVR3='tmux -f $HOME/${ENV}_tmux.conf new -s $ENV "ssh $USER@$APP1$FQDN" \; renamew -t $ENV:1 ALL \; splitw -t $ENV:1.1 -h "ssh $USER@$BAT1$FQDN" \; splitw -t $ENV:1.2 -h "ssh $USER@$WEB1$FQDN" \; selectl even-vertical \; selectp -t $ENV:1.1 \; setw synchronize-panes on'
@@ -767,6 +767,20 @@ function cs920qa()
 	eval $SVR3
 	rm $HOME/${ENV}_tmux.conf
 }
+
+function cs920spt()
+{
+	# Variables
+	ENV='cs920spt'
+	APP1='cs920sptaa1'
+	BAT1='cs920sptbb1'
+	WEB1='cs920sptww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
+
 
 function cs920sys()
 {
