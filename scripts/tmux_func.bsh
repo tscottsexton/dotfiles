@@ -1088,6 +1088,37 @@ function mp910prd()
 	rm $HOME/${ENV}_tmux.conf
 }
 
+function mp916prd()
+{
+	# Variables
+	ENV='mp916prd'
+	APP1='mp916prdaa1'
+	APP2='mp916prdaa2'
+	APP3='mp916prdaa3'
+	APP4='mp916prdaa4'
+	APP5='mp916prdaa5'
+	APP6='mp916prdaa6'
+	API1='mp916prdai1'
+	API2='mp916prdai2'
+	BAT1='mp916prdbb1'
+	BAT2='mp916prdbb2'
+	WEB1='mp916prdww1'
+	WEB2='mp916prdww2'
+	WEB3='mp916prdww3'
+	WEB4='mp916prdww4'
+	WEB5='mp916prdww5'
+	WEB6='mp916prdww6'
+	WEI1='mp916prdwi1'
+	WEI2='mp916prdwi2'
+	WEI3='mp916prdwi3'
+	WEI4='mp916prdwi4'
+	# Commands
+	prdchk &&
+	dynconf20
+	eval $SVR20
+	rm $HOME/${ENV}_tmux.conf
+}
+
 function mp916pre()
 {
 	# Variables
@@ -1172,6 +1203,18 @@ function mp910tst()
 	rm $HOME/${ENV}_tmux.conf
 }
 
+function mp916tst()
+{
+	# Variables
+	ENV='mp916tst'
+	APP1='mp916tstaa1'
+	BAT1='mp916tstbb1'
+	WEB1='mp916tstww1'
+	# Commands
+	dynconf3
+	eval $SVR3
+	rm $HOME/${ENV}_tmux.conf
+}
 function mp910upg()
 {
 	# Variables
