@@ -1057,6 +1057,37 @@ function mp910lt()
 	rm $HOME/${ENV}_tmux.conf
 }
 
+function mp917prd()
+{
+	# Variables
+	ENV='mp917prd'
+	APP1='mp917prdaa1'
+	APP2='mp917prdaa2'
+	APP3='mp917prdaa3'
+	APP4='mp917prdaa4'
+	APP5='mp917prdaa5'
+	APP6='mp917prdaa6'
+	API1='mp917prdai1'
+	API2='mp917prdai2'
+	BAT1='mp917prdbb1'
+	BAT2='mp917prdbb2'
+	WEB1='mp917prdww1'
+	WEB2='mp917prdww2'
+	WEB3='mp917prdww3'
+	WEB4='mp917prdww4'
+	WEB5='mp917prdww5'
+	WEB6='mp917prdww6'
+	WEI1='mp917prdwi1'
+	WEI2='mp917prdwi2'
+	WEI3='mp917prdwi3'
+	WEI4='mp917prdwi4'
+	# Commands
+	prdchk &&
+	dynconf20
+	eval $SVR20
+	rm $HOME/${ENV}_tmux.conf
+}
+
 function mp910prd()
 {
 	# Variables
