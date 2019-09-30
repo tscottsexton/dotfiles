@@ -554,12 +554,12 @@ function cs920pre()
 {
 	# Variables
 	ENV='cs920pre'
-	APP1='cs920preaa1'
-	APP2='cs920preaa2'
-	BAT1='cs920prebb1'
-	BAT2='cs920prebb2'
-	WEB1='cs920preww1'
-	WEB2='cs920preww2'
+	APP1='cs927preaa1'
+	APP2='cs927preaa2'
+	BAT1='cs927prebb1'
+	BAT2='cs927prebb2'
+	WEB1='cs927preww1'
+	WEB2='cs927preww2'
 	# Commands
 	dynconf6
 	eval $SVR6
