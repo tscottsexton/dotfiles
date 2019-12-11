@@ -781,13 +781,13 @@ function fo920sys()
 	rm $HOME/${ENV}_tmux.conf
 }
 
-function fo920tst()
+function fo927tst()
 {
 	# Variables
-	ENV='fo920tst'
-	APP1='fo920tstaa1'
-	BAT1='fo920tstbb1'
-	WEB1='fo920tstww1'
+	ENV='fo927tst'
+	APP1='fo927tstaa1'
+	BAT1='fo927tstbb1'
+	WEB1='fo927tstww1'
 	# Commands
 	dynconf3
 	eval $SVR3
