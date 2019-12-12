@@ -823,13 +823,13 @@ function hc910pre()
 	rm $HOME/${ENV}_tmux.conf
 }
 
-function hc920dmo()
+function hc927dmo()
 {
 	# Variables
-	ENV='hc920dmo'
-	APP1='hc920dmoaa1'
-	BAT1='hc920dmobb1'
-	WEB1='hc920dmoww1'
+	ENV='hc927dmo'
+	APP1='hc927dmoaa1'
+	BAT1='hc927dmobb1'
+	WEB1='hc927dmoww1'
 	# Commands
 	dynconf3
 	eval $SVR3
@@ -948,13 +948,13 @@ function hc920spt()
 	rm $HOME/${ENV}_tmux.conf
 }
 
-function hc920sys()
+function hc927sys()
 {
 	# Variables
-	ENV='hc920sys'
-	APP1='hc920sysaa1'
-	BAT1='hc920sysbb1'
-	WEB1='hc920sysww1'
+	ENV='hc927sys'
+	APP1='hc927sysaa1'
+	BAT1='hc927sysbb1'
+	WEB1='hc927sysww1'
 	# Commands
 	dynconf3
 	eval $SVR3
