@@ -608,10 +608,10 @@ function cs920sys()
 function cs920tst()
 {
 	# Variables
-	ENV='cs920tst'
-	APP1='cs920tstaa1'
-	BAT1='cs920tstbb1'
-	WEB1='cs920tstww1'
+	ENV='cs927tst'
+	APP1='cs927tstaa1'
+	BAT1='cs927tstbb1'
+	WEB1='cs927tstww1'
 	# Commands
 	dynconf3
 	eval $SVR3
