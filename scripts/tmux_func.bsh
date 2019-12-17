@@ -797,10 +797,10 @@ function fo927tst()
 function fo920upg()
 {
 	# Variables
-	ENV='fo920upg'
-	APP1='fo920upgaa1'
-	BAT1='fo920upgbb1'
-	WEB1='fo920upgww1'
+	ENV='fo927upg'
+	APP1='fo927upgaa1'
+	BAT1='fo927upgbb1'
+	WEB1='fo927upgww1'
 	# Commands
 	dynconf3
 	eval $SVR3
