@@ -693,17 +693,17 @@ function fo920lt()
 function fo920prd()
 {
 	# Variables
-	ENV='fo920prd'
-	APP1='fo920prdaa1'
-	APP2='fo920prdaa2'
-	APP3='fo920prdaa3'
-	API1='fo920prdai1'
-	API2='fo920prdai2'
-	BAT1='fo920prdbb1'
-	BAT2='fo920prdbb2'
-	WEB1='fo920prdww1'
-	WEB2='fo920prdww2'
-	WEB3='fo920prdww3'
+	ENV='fo927prd'
+	APP1='fo927prdaa1'
+	APP2='fo927prdaa2'
+	APP3='fo927prdaa3'
+	API1='fo927prdai1'
+	API2='fo927prdai2'
+	BAT1='fo927prdbb1'
+	BAT2='fo927prdbb2'
+	WEB1='fo927prdww1'
+	WEB2='fo927prdww2'
+	WEB3='fo927prdww3'
 	# Commands
 	prdchk &&
 	dynconf10
