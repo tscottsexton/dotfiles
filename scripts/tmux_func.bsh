@@ -693,17 +693,17 @@ function fo920lt()
 function fo920prd()
 {
 	# Variables
-	ENV='fo920prd'
-	APP1='fo920prdaa1'
-	APP2='fo920prdaa2'
-	APP3='fo920prdaa3'
-	API1='fo920prdai1'
-	API2='fo920prdai2'
-	BAT1='fo920prdbb1'
-	BAT2='fo920prdbb2'
-	WEB1='fo920prdww1'
-	WEB2='fo920prdww2'
-	WEB3='fo920prdww3'
+	ENV='fo927prd'
+	APP1='fo927prdaa1'
+	APP2='fo927prdaa2'
+	APP3='fo927prdaa3'
+	API1='fo927prdai1'
+	API2='fo927prdai2'
+	BAT1='fo927prdbb1'
+	BAT2='fo927prdbb2'
+	WEB1='fo927prdww1'
+	WEB2='fo927prdww2'
+	WEB3='fo927prdww3'
 	# Commands
 	prdchk &&
 	dynconf10
@@ -1139,9 +1139,9 @@ function mp910qa()
 {
 	# Variables
 	ENV='mp910qa'
-	APP1='mp910qa-aa1'
-	BAT1='mp910qa-bb1'
-	WEB1='mp910qa-ww1'
+	APP1='mp917qa-aa1'
+	BAT1='mp917qa-bb1'
+	WEB1='mp917qa-ww1'
 	# Commands
 	dynconf3
 	eval $SVR3
@@ -1191,9 +1191,9 @@ function mp910tst()
 {
 	# Variables
 	ENV='mp910tst'
-	APP1='mp910tstaa1'
-	BAT1='mp910tstbb1'
-	WEB1='mp910tstww1'
+	APP1='mp917tstaa1'
+	BAT1='mp917tstbb1'
+	WEB1='mp917tstww1'
 	# Commands
 	dynconf3
 	eval $SVR3
@@ -1204,9 +1204,9 @@ function mp910upg()
 {
 	# Variables
 	ENV='mp910upg'
-	APP1='mp910upgaa1'
-	BAT1='mp910upgbb1'
-	WEB1='mp910upgww1'
+	APP1='mp917upgaa1'
+	BAT1='mp917upgbb1'
+	WEB1='mp917upgww1'
 	# Commands
 	dynconf3
 	eval $SVR3
