@@ -473,9 +473,9 @@ function cs920dmo()
 {
 	# Variables
 	ENV='cs920dmo'
-	APP1='cs920dmoaa1'
-	BAT1='cs920dmobb1'
-	WEB1='cs920dmoww1'
+	APP1='cs927dmoaa1'
+	BAT1='cs927dmobb1'
+	WEB1='cs927dmoww1'
 	# Commands
 	dynconf3
 	eval $SVR3
