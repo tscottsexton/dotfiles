@@ -823,7 +823,7 @@ function hc910pre()
 	rm $HOME/${ENV}_tmux.conf
 }
 
-function hc927dmo()
+function hc920dmo()
 {
 	# Variables
 	ENV='hc927dmo'
@@ -853,16 +853,16 @@ function hc920lt()
 {
 	# Variables
 	ENV='hc920lt'
-	APP1='hc920lt-aa1'
-	APP2='hc920lt-aa2'
-	APP3='hc920lt-aa3'
-	API1='hc920lt-ai1'
-	API2='hc920lt-ai2'
-	BAT1='hc920lt-bb1'
-	BAT2='hc920lt-bb2'
-	WEB1='hc920lt-ww1'
-	WEB2='hc920lt-ww2'
-	WEB3='hc920lt-ww3'
+	APP1='hc927lt-aa1'
+	APP2='hc927lt-aa2'
+	APP3='hc927lt-aa3'
+	API1='hc927lt-ai1'
+	API2='hc927lt-ai2'
+	BAT1='hc927lt-bb1'
+	BAT2='hc927lt-bb2'
+	WEB1='hc927lt-ww1'
+	WEB2='hc927lt-ww2'
+	WEB3='hc927lt-ww3'
 	# Commands
 	dynconf10
 	eval $SVR10
@@ -939,9 +939,9 @@ function hc920spt()
 {
 	# Variables
 	ENV='hc920spt'
-	APP1='hc920sptaa1'
-	BAT1='hc920sptbb1'
-	WEB1='hc920sptww1'
+	APP1='hc927sptaa1'
+	BAT1='hc927sptbb1'
+	WEB1='hc927sptww1'
 	# Commands
 	dynconf3
 	eval $SVR3
@@ -965,9 +965,9 @@ function hc920tst()
 {
 	# Variables
 	ENV='hc920tst'
-	APP1='hc920tstaa1'
-	BAT1='hc920tstbb1'
-	WEB1='hc920tstww1'
+	APP1='hc927tstaa1'
+	BAT1='hc927tstbb1'
+	WEB1='hc927tstww1'
 	# Commands
 	dynconf3
 	eval $SVR3
@@ -978,9 +978,9 @@ function hc920upg()
 {
 	# Variables
 	ENV='hc920upg'
-	APP1='hc920upgaa1'
-	BAT1='hc920upgbb1'
-	WEB1='hc920upgww1'
+	APP1='hc927upgaa1'
+	BAT1='hc927upgbb1'
+	WEB1='hc927upgww1'
 	# Commands
 	dynconf3
 	eval $SVR3
