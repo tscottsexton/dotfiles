@@ -582,10 +582,10 @@ function cs920qa()
 function cs920spt()
 {
 	# Variables
-	ENV='cs920spt'
-	APP1='cs920sptaa1'
-	BAT1='cs920sptbb1'
-	WEB1='cs920sptww1'
+	ENV='cs927spt'
+	APP1='cs927sptaa1'
+	BAT1='cs927sptbb1'
+	WEB1='cs927sptww1'
 	# Commands
 	dynconf3
 	eval $SVR3
