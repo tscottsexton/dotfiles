@@ -873,19 +873,21 @@ function hc920prd()
 {
 	# Variables
 	ENV='hc920prd'
-	APP1='hc920prdaa1'
-	APP2='hc920prdaa2'
-	APP3='hc920prdaa3'
-	API1='hc920prdai1'
-	API2='hc920prdai2'
-	BAT1='hc920prdbb1'
-	BAT2='hc920prdbb2'
-	WEB1='hc920prdww1'
-	WEB2='hc920prdww2'
-	WEB3='hc920prdww3'
+	APP1='hc927prdaa1'
+	APP2='hc927prdaa2'
+	APP3='hc927prdaa3'
+        APP4='hc927prdaa4'
+	API1='hc927prdai1'
+	API2='hc927prdai2'
+	BAT1='hc927prdbb1'
+	BAT2='hc927prdbb2'
+	WEB1='hc927prdww1'
+	WEB2='hc927prdww2'
+	WEB3='hc927prdww3'
+        WEB4='hc927prdww4'
 	# Commands
 	prdchk &&
-	dynconf10
+	dynconf12
 	eval $SVR10
 	rm $HOME/${ENV}_tmux.conf
 }
